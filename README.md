@@ -1,6 +1,6 @@
 # MBUprime StructLab
 
-MBUprime StructLab screens PCR and qPCR oligonucleotides before laboratory use. The Windows distribution provides the desktop application and headless CLI source. Ubuntu packaging now produces a native desktop application and separate headless CLI in one onedir tarball, while macOS remains CLI-only; both non-Windows targets remain unverified until their native jobs complete.
+MBUprime StructLab screens PCR and qPCR oligonucleotides for dimers and hairpins. The Windows distribution provides the desktop application and headless CLI source. Ubuntu packaging now produces a native desktop application and separate headless CLI in one onedir tarball, while macOS remains CLI-only; both non-Windows targets remain unverified until their native jobs complete.
 
 The application accepts a single assay or a multiplex panel. Analysis runs locally on the computer; oligonucleotide sequences and results are not uploaded to an external service.
 
