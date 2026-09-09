@@ -1,0 +1,6 @@
+CascadiaMono.ttf
+
+Source: Microsoft Cascadia Mono installed with Windows at C:\Windows\Fonts\CascadiaMono.ttf
+Copied: 2026-08-25
+SHA-256: 0e141cb99609f6f10ad05313fd1807d5cc9e28658dcbb35ab162e52ff67dc718
+License: SIL Open Font License 1.1; see OFL.txt in this directory.

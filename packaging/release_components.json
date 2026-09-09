@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "application_license": "GPL-2.0-only",
+  "distribution_license_overrides": {"seqfold": "MIT"},
+  "first_party_module_roots": [
+    "analyzed_run_archive",
+    "app_assets",
+    "external_engines",
+    "frozen_gui_qualification",
+    "gui_exports",
+    "gui_results",
+    "gui_styles",
+    "gui_tokens_generated",
+    "headless_geometry",
+    "locale_numbers",
+    "mbuprime_structlab",
+    "native_target",
+    "nn_thermo",
+    "primer_tool_gui",
+    "rnastructure_native",
+    "scientific_metadata",
+    "structure_draw",
+    "thermo_engine",
+    "vienna_backend"
+  ],
+  "packager_module_roots": ["_pyi_rth_utils"],
+  "always_include_distributions": ["PyInstaller"],
+  "static_components": [
+    {
+      "id": "cpython-runtime",
+      "name": "CPython runtime",
+      "version_source": "python",
+      "license_source": {"kind": "python-root", "path": "LICENSE.txt"},
+      "payload_any": ["_internal/python*.dll", "_internal/base_library.zip"]
+    },
+    {
+      "id": "tcl-tk-runtime",
+      "name": "Tcl/Tk runtime",
+      "version": "8.6",
+      "license_source": {"kind": "python-tcl", "path": "tk8.6/license.terms"},
+      "payload_any": ["_internal/tcl86t.dll", "_internal/tk86t.dll", "_internal/_tk_data/tk.tcl"]
+    },
+    {
+      "id": "openssl-runtime",
+      "name": "OpenSSL runtime bundled by CPython",
+      "license_source": {"kind": "python-root", "path": "LICENSE.txt"},
+      "payload_any": ["_internal/libcrypto-*.dll", "_internal/libssl-*.dll"]
+    },
+    {
+      "id": "libffi-runtime",
+      "name": "libffi runtime bundled by CPython",
+      "license_source": {"kind": "python-root", "path": "LICENSE.txt"},
+      "payload_any": ["_internal/libffi-*.dll"]
+    },
+    {
+      "id": "zlib-runtime",
+      "name": "zlib runtime bundled by CPython",
+      "license_source": {"kind": "python-root", "path": "LICENSE.txt"},
+      "payload_any": ["_internal/zlib*.dll"]
+    },
+    {
+      "id": "microsoft-runtime",
+      "name": "Microsoft distributable runtime used by CPython",
+      "license_source": {"kind": "python-root", "path": "LICENSE.txt"},
+      "payload_any": ["_internal/VCRUNTIME*.dll", "_internal/MSVCP*.dll"]
+    },
+    {
+      "id": "openblas-runtime",
+      "name": "OpenBLAS and linked runtimes bundled by NumPy",
+      "version_source": "numpy-build-config:blas",
+      "license_source": {"kind": "distribution", "name": "numpy"},
+      "payload_any": ["_internal/numpy.libs/*openblas*.dll"]
+    },
+    {
+      "id": "cascadia-mono",
+      "name": "Cascadia Mono",
+      "license_declared": "OFL-1.1",
+      "license_source": {"kind": "project", "paths": ["assets/fonts/OFL.txt", "assets/fonts/SOURCE.txt"]},
+      "payload_any": ["_internal/assets/fonts/CascadiaMono.ttf"]
+    },
+    {
+      "id": "rnastructure-6.6",
+      "name": "RNAstructure",
+      "version": "6.6",
+      "license_declared": "GPL-2.0-only",
+      "license_source": {"kind": "project", "paths": ["vendor/rnastructure-6.6/COPYING", "vendor/rnastructure-6.6/README.md"]},
+      "payload_any": ["_internal/rnastructure_native/*.pyd", "_internal/rnastructure_native/data_tables/*"]
+    }
+  ]
+}

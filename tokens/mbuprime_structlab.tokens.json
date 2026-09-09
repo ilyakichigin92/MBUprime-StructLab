@@ -1,0 +1,217 @@
+{
+  "color": {
+    "$type": "color",
+    "app-bg": {
+      "$value": "#F5F7F8",
+      "$description": "Quiet application background for the lab-console shell."
+    },
+    "surface": {
+      "$value": "#FFFFFF",
+      "$description": "Primary panel, table, and input surface."
+    },
+    "surface-subtle": {
+      "$value": "#F8FAFB",
+      "$description": "Low-emphasis detail and read-only surfaces."
+    },
+    "surface-muted": {
+      "$value": "#EDF1F2",
+      "$description": "Table headers, neutral summaries, and matrix labels."
+    },
+    "border": {
+      "$value": "#718089",
+      "$description": "Default divider and input outline; at least 3:1 against application surfaces."
+    },
+    "border-strong": {
+      "$value": "#52616A",
+      "$description": "High-emphasis table and section boundary."
+    },
+    "text": {
+      "$value": "#172229",
+      "$description": "Primary readable text."
+    },
+    "text-muted": {
+      "$value": "#52616A",
+      "$description": "Secondary labels, helper text, and status metadata."
+    },
+    "accent": {
+      "$value": "#087E72",
+      "$description": "Primary action, focus, and information accent."
+    },
+    "accent-hover": {
+      "$value": "#06675F",
+      "$description": "Pressed and hover state for primary actions."
+    },
+    "accent-soft": {
+      "$value": "#DCEFEB",
+      "$description": "Selected rows and informational status backgrounds."
+    },
+    "focus": {
+      "$value": "#087E72",
+      "$description": "Keyboard-focus indicator, distinct from the normal boundary."
+    },
+    "on-accent": {
+      "$value": "#FFFFFF",
+      "$description": "Text and symbols on the primary accent."
+    },
+    "selected": {
+      "$value": "#DCEFEB",
+      "$description": "Selected table rows, active controls, and matrix focus."
+    },
+    "ok-bg": {
+      "$value": "#E7F5EC",
+      "$description": "Clean-result severity background."
+    },
+    "ok-fg": {
+      "$value": "#18794E",
+      "$description": "Clean-result severity text."
+    },
+    "caution-bg": {
+      "$value": "#FFF4D6",
+      "$description": "Caution severity background."
+    },
+    "caution-fg": {
+      "$value": "#7A4E00",
+      "$description": "Caution severity text."
+    },
+    "problem-bg": {
+      "$value": "#FDE8E8",
+      "$description": "Problem severity background."
+    },
+    "problem-fg": {
+      "$value": "#B42318",
+      "$description": "Problem severity text."
+    },
+    "problem-active": {
+      "$value": "#FBD5D5",
+      "$description": "Pressed danger-control surface."
+    },
+    "diagram-base-a": {
+      "$value": "#2CA02C",
+      "$description": "Adenine glyph in structure diagrams."
+    },
+    "diagram-base-c": {
+      "$value": "#1F77B4",
+      "$description": "Cytosine glyph in structure diagrams."
+    },
+    "diagram-base-g": {
+      "$value": "#E08214",
+      "$description": "Guanine glyph in structure diagrams."
+    },
+    "diagram-base-t": {
+      "$value": "#D62728",
+      "$description": "Thymine and uracil glyph in structure diagrams."
+    },
+    "diagram-base-n": {
+      "$value": "#7F7F7F",
+      "$description": "Unknown-base glyph in structure diagrams."
+    },
+    "diagram-base-fallback": {
+      "$value": "#333333",
+      "$description": "Fallback glyph for unexpected diagram bases."
+    },
+    "diagram-backbone": {
+      "$value": "#9AA4AD",
+      "$description": "Backbone line in structure diagrams."
+    },
+    "diagram-bond-neutral": {
+      "$value": "#7B8794",
+      "$description": "Ordinary base-pair bond in structure diagrams."
+    },
+    "diagram-risk-zone": {
+      "$value": "#FFF2BF",
+      "$description": "Highlighted 3-prime risk region in structure diagrams."
+    },
+    "diagram-text": {
+      "$value": "#2F3437",
+      "$description": "Primary structure-diagram annotation text."
+    },
+    "diagram-muted": {
+      "$value": "#59636E",
+      "$description": "Secondary structure-diagram annotation text."
+    },
+    "diagram-node-outline": {
+      "$value": "#D0D7DE",
+      "$description": "Outline around individual diagram bases."
+    },
+    "diagram-problem-dark": {
+      "$value": "#7A271A",
+      "$description": "Dark problem annotation in structure diagrams."
+    },
+    "diagram-caution-accent": {
+      "$value": "#B7791F",
+      "$description": "Caution bond and badge accent in structure diagrams."
+    },
+    "diagram-caution-dark": {
+      "$value": "#6F4E00",
+      "$description": "Dark caution annotation in structure diagrams."
+    },
+    "diagram-ok-accent": {
+      "$value": "#2F855A",
+      "$description": "OK bond and badge accent in structure diagrams."
+    },
+    "diagram-ok-dark": {
+      "$value": "#1F5F3D",
+      "$description": "Dark OK annotation in structure diagrams."
+    },
+    "diagram-unclassified-bg": {
+      "$value": "#F2F4F5",
+      "$description": "Unclassified badge background in structure diagrams."
+    },
+    "diagram-unclassified-dark": {
+      "$value": "#3F4850",
+      "$description": "Dark unclassified annotation in structure diagrams."
+    }
+  },
+  "spacing": {
+    "$type": "dimension",
+    "xxs": {
+      "$value": "2px",
+      "$description": "Micro alignment only."
+    },
+    "xs": {
+      "$value": "4px",
+      "$description": "Tight label/input spacing."
+    },
+    "sm": {
+      "$value": "8px",
+      "$description": "Default control gap."
+    },
+    "md": {
+      "$value": "12px",
+      "$description": "Pane gutters and tab padding."
+    },
+    "lg": {
+      "$value": "16px",
+      "$description": "Section separation."
+    },
+    "xl": {
+      "$value": "24px",
+      "$description": "Empty-state inset and larger rhythm."
+    }
+  },
+  "typography": {
+    "body": {
+      "$type": "font-family",
+      "$value": "Segoe UI",
+      "$description": "Primary Windows-native UI face."
+    },
+    "mono": {
+      "$type": "font-family",
+      "$value": "Cascadia Mono",
+      "$description": "Sequence and structure alignment face."
+    }
+  },
+  "dimensions": {
+    "sidebar-width": 368,
+    "matrix-label-width": 152,
+    "matrix-header-height": 44
+  },
+  "comfortable": {
+    "rowheight": 24,
+    "control-pad-y": 7,
+    "matrix-cell-w": 96,
+    "matrix-cell-h": 36,
+    "body-size": 9,
+    "mono-size": 10
+  }
+}

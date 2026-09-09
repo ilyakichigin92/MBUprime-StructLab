@@ -1,0 +1,74 @@
+{
+  "version": "3.12.14",
+  "source": {
+    "filename": "Python-3.12.14.tgz",
+    "url": "https://www.python.org/ftp/python/3.12.14/Python-3.12.14.tgz",
+    "sha256": "6c6df908d2c3fd24e6d76869e92542abd0f33aec9dfc18df8875f89660286d43",
+    "release_url": "https://www.python.org/downloads/release/python-31214/"
+  },
+  "externals": [
+    {
+      "name": "bzip2-1.0.8",
+      "repository": "cpython-source-deps",
+      "commit": "05301997b2f9590f49c672cf3dfd3d3dfa7ad521",
+      "url": "https://codeload.github.com/python/cpython-source-deps/zip/05301997b2f9590f49c672cf3dfd3d3dfa7ad521",
+      "sha256": "44b15bede52b32f8673a2976621a847258b041243c003e30f4d9a05214785fe5",
+      "metadata_url": "https://api.github.com/repos/python/cpython-source-deps/git/ref/tags/bzip2-1.0.8",
+      "filename": "bzip2-1.0.8.zip"
+    },
+    {
+      "name": "sqlite-3.49.1.0",
+      "repository": "cpython-source-deps",
+      "commit": "543bcec57e7552865efa9b178ac4f817701e11be",
+      "url": "https://codeload.github.com/python/cpython-source-deps/zip/543bcec57e7552865efa9b178ac4f817701e11be",
+      "sha256": "99b27dd593f32b09c2952b460b48f97134a6c6e1be3c23eed535632e5b477cc3",
+      "metadata_url": "https://api.github.com/repos/python/cpython-source-deps/git/ref/tags/sqlite-3.49.1.0",
+      "filename": "sqlite-3.49.1.0.zip"
+    },
+    {
+      "name": "xz-5.2.5",
+      "repository": "cpython-source-deps",
+      "commit": "c6bc0c612605622aaef101a33a751f9de2ecc193",
+      "url": "https://codeload.github.com/python/cpython-source-deps/zip/c6bc0c612605622aaef101a33a751f9de2ecc193",
+      "sha256": "d99882a8f9fd48be0e605e27e3c077e5eaab370f6f52ebcc8ff754480ffdf0bc",
+      "metadata_url": "https://api.github.com/repos/python/cpython-source-deps/git/ref/tags/xz-5.2.5",
+      "filename": "xz-5.2.5.zip"
+    },
+    {
+      "name": "zlib-1.3.1",
+      "repository": "cpython-source-deps",
+      "commit": "4dc98e1909830e2bdc2a9cc2236e3c5d5037335b",
+      "url": "https://codeload.github.com/python/cpython-source-deps/zip/4dc98e1909830e2bdc2a9cc2236e3c5d5037335b",
+      "sha256": "39d867c083ebc37c77cf03a442f87c0f83db006eb64343bd4a19f1c84c26f50c",
+      "metadata_url": "https://api.github.com/repos/python/cpython-source-deps/git/ref/tags/zlib-1.3.1",
+      "filename": "zlib-1.3.1.zip"
+    },
+    {
+      "name": "libffi-3.4.4",
+      "repository": "cpython-bin-deps",
+      "commit": "94cb9a1c7feb608adf2b9f8fe2dbd6925ffbf90d",
+      "url": "https://codeload.github.com/python/cpython-bin-deps/zip/94cb9a1c7feb608adf2b9f8fe2dbd6925ffbf90d",
+      "sha256": "6b0f53490e0dd958708bff32df689cf2163c214147fcb8edb76a403fa6a877ca",
+      "metadata_url": "https://api.github.com/repos/python/cpython-bin-deps/git/ref/tags/libffi-3.4.4",
+      "filename": "libffi-3.4.4.zip"
+    },
+    {
+      "name": "openssl-bin-3.0.16.2",
+      "repository": "cpython-bin-deps",
+      "commit": "1174fd43d858425c345b16d631716fb98ba492ea",
+      "url": "https://codeload.github.com/python/cpython-bin-deps/zip/1174fd43d858425c345b16d631716fb98ba492ea",
+      "sha256": "b741fd1411a36cb899fee2c39b70a4492f4bc1c6e2301d67df32e9754118a63b",
+      "metadata_url": "https://api.github.com/repos/python/cpython-bin-deps/git/ref/tags/openssl-bin-3.0.16.2",
+      "filename": "openssl-bin-3.0.16.2.zip"
+    },
+    {
+      "name": "tcltk-8.6.15.2",
+      "repository": "cpython-bin-deps",
+      "commit": "c807be2b19bafc06767b2ed8afec4d5f9a9553b2",
+      "url": "https://codeload.github.com/python/cpython-bin-deps/zip/c807be2b19bafc06767b2ed8afec4d5f9a9553b2",
+      "sha256": "5957790880339f73651cc25a83e190dafea15841914794e19d3ce83fc538ae10",
+      "metadata_url": "https://api.github.com/repos/python/cpython-bin-deps/git/ref/tags/tcltk-8.6.15.2",
+      "filename": "tcltk-8.6.15.2.zip"
+    }
+  ]
+}

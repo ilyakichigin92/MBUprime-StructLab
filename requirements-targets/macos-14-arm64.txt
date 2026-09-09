@@ -1,0 +1,4 @@
+# CPython 3.12 macOS arm64 runtime artifacts. primer3-py builds from this sdist.
+primer3-py==2.3.0 --hash=sha256:234fb6e3c9eb0ca537eb30befa03c9880bbb411a4066693ba59d8abcf7c813be
+ViennaRNA==2.7.2 --hash=sha256:306efabeec8e5608351f5d039d4ce0c171d0bd216086eaf255cdb51d8c827640
+seqfold==0.10.2 --hash=sha256:7a8346fcff651d3b137086460e9bf274a30187c86812405328a2f94227b62802

@@ -1,0 +1,4 @@
+# CPython 3.12 Windows x86-64 CLI runtime artifacts, verified 2026-08-27.
+primer3-py==2.3.0 --hash=sha256:7353cdede7f810c009711b41232d13a11762143dcbdfd8cec7f53beeab1deeb4
+ViennaRNA==2.7.2 --hash=sha256:68b0803568549256dadf7383e02ee98973433e6d4c59abebb6a27f278ba77c02
+seqfold==0.10.2 --hash=sha256:d8f075bd6738b6d82baa5bee61b3b45bc05ad5d37d2687d9bd40c54d175cf91b

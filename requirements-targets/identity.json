@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "targets": {
+    "cp312-linux-x86_64": {
+      "build_lock": "ubuntu-build-common.txt",
+      "delivery": "native Tk desktop plus headless CLI PyInstaller onedir tarball or transactional make install",
+      "native_host_verified": false,
+      "platform": "Ubuntu 24.04 x86-64",
+      "runtime_lock": "ubuntu-24.04-x86_64.txt"
+    },
+    "cp312-macos-arm64": {
+      "build_lock": "macos-primer3-build.txt",
+      "delivery": "tagged-source CLI install",
+      "native_host_verified": false,
+      "platform": "macOS 14 arm64",
+      "runtime_lock": "macos-14-arm64.txt"
+    },
+    "cp312-windows-x86_64": {
+      "delivery": "verified GUI onedir and source CLI",
+      "native_host_verified": true,
+      "platform": "Windows 10/11 x86-64",
+      "runtime_lock": "windows-x86_64.txt"
+    }
+  }
+}

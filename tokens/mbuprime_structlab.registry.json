@@ -1,0 +1,32 @@
+{
+  "project": "mbuprime-structlab",
+  "version": "1.0.0",
+  "source": {
+    "route": "calm lab console",
+    "reference_project": "consensus_primer_designer",
+    "created_by": "atelier",
+    "created_at": "2026-07-15"
+  },
+  "intent": {
+    "summary": "Modern, calm qPCR/primer analysis console with compact operational density, quiet surfaces, teal action focus, and table-first navigation.",
+    "avoid": [
+      "marketing-style hero panels",
+      "large decorative cards",
+      "blue legacy palette",
+      "bulky spacing that reduces result density"
+    ]
+  },
+  "tokens": {
+    "source": "tokens/mbuprime_structlab.tokens.json"
+  },
+  "implementation_contract": {
+    "toolkit": "Tkinter ttk",
+    "layout": [
+      "Preserve two-pane lab workbench: setup rail left, result workspace right.",
+      "Keep melting temperatures first, then flagged structures, matrix, and detailed structures.",
+      "Use semantic severity color tags in tables and matrix cells.",
+      "Keep controls compact; prefer 8 px default gaps and 12 px pane gutters."
+    ],
+    "styles_source": "gui_styles.py:STYLE_CONTRACT"
+  }
+}

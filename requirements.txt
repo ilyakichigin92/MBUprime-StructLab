@@ -1,0 +1,3 @@
+# Compatibility entry point for source installs.  The exact scientific lock is
+# deliberately shared with executable builds.
+-r requirements-lock.txt

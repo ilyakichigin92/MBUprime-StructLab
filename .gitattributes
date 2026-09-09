@@ -1,0 +1,17 @@
+# Keep repository-authored text stable across platforms.
+*.py text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.bat text eol=crlf
+*.json text eol=lf
+
+# Packaged and integrity-checked files must survive checkout byte-for-byte.
+/release/** -text
+/rnastructure_native/data_tables/** -text
+/rnastructure_native/*.pyd -text
+/assets/*.ico -text
+/assets/fonts/*.ttf -text
+
+# This release snapshot preserves the exact corresponding-source bytes.
+# Regenerating source manifests requires a new build if line endings change.
+* -text

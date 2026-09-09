@@ -1,0 +1,4 @@
+# Exact macOS arm64 build frontend for the pinned primer3-py 2.3.0 sdist.
+Cython==3.1.3 --hash=sha256:93dd0f62a3f8e93166d8584f8b243180d681ba8fed1f530b55d5f70c348c5797
+setuptools==83.0.0 --hash=sha256:29b23c360f22f414dc7336bb39178cc7bcbf6021ed2733cde173f09dba19abb3
+wheel==0.45.1 --hash=sha256:708e7481cc80179af0e556bbf0cc00b8444c7321e2700b8d8580231d13017248

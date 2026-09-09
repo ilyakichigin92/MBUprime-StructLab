@@ -1,0 +1,71 @@
+name: Ubuntu desktop and CLI native verification
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+permissions: {}
+
+jobs:
+  source-install:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.12.10"
+          architecture: x64
+      - name: Install source-build host prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends g++ make python3-tk xvfb xauth fontconfig
+      - name: Prepare an exact offline wheelhouse
+        run: |
+          mkdir -p "$RUNNER_TEMP/wheelhouse"
+          python -m pip download --disable-pip-version-check --require-hashes --only-binary=:all: \
+            -r requirements-targets/ubuntu-source-build.txt \
+            -r requirements-targets/ubuntu-24.04-x86_64.txt \
+            --dest "$RUNNER_TEMP/wheelhouse"
+      - name: Install and verify from source with plain make install
+        run: |
+          install_home="$RUNNER_TEMP/source-install-home"
+          mkdir -p "$install_home"
+          HOME="$install_home" make install WHEELHOUSE="$RUNNER_TEMP/wheelhouse"
+          HOME="$install_home" make verify-install
+          HOME="$install_home" xvfb-run -a make verify-gui
+          HOME="$install_home" make uninstall
+
+  native-application:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.12.10"
+          architecture: x64
+      - name: Install Ubuntu Tk and virtual display runtime
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends python3-tk xvfb xauth fontconfig
+      - name: Verify native target
+        run: python -c "import platform,struct,sys,tkinter; assert sys.version_info[:3]==(3,12,10); assert struct.calcsize('P')==8; assert platform.machine()=='x86_64'; assert tkinter.TkVersion>=8.6"
+      - name: Install exact runtime and build dependencies
+        run: |
+          python -m pip install --disable-pip-version-check --require-hashes -r requirements-targets/ubuntu-24.04-x86_64.txt
+          python -m pip install --disable-pip-version-check --require-hashes -r requirements-targets/ubuntu-build-common.txt
+      - name: Build and verify native GUI plus headless CLI onedir tarball
+        run: bash packaging/build_linux_cli.sh
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: mbuprime-structlab-ubuntu24.04-x86_64-unverified
+          path: |
+            dist/mbuprime-structlab-2.4.2-ubuntu24.04-x86_64.tar.gz
+            dist/mbuprime-structlab-2.4.2-ubuntu24.04-x86_64.tar.gz.sha256
+          if-no-files-found: error
+          retention-days: 14

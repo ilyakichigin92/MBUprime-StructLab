@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools==83.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mbuprime-structlab"
+version = "2.4.2"
+description = "PCR/qPCR oligonucleotide structure analysis with desktop and headless interfaces"
+readme = "README.md"
+requires-python = "==3.12.*"
+license = "GPL-2.0-only"
+license-files = ["COPYING"]
+authors = [{ name = "MBUprime StructLab contributors" }]
+dependencies = [
+  "primer3-py==2.3.0",
+  "ViennaRNA==2.7.2",
+  "seqfold==0.10.2",
+]
+
+[project.scripts]
+mbuprime-structlab = "mbuprime_structlab.cli:main"
+
+[tool.setuptools]
+include-package-data = true
+py-modules = [
+  "analyzed_run_archive",
+  "app_assets",
+  "external_engines",
+  "gui_exports",
+  "gui_results",
+  "gui_styles",
+  "gui_tokens_generated",
+  "headless_geometry",
+  "locale_numbers",
+  "native_target",
+  "nn_thermo",
+  "primer_tool_gui",
+  "scientific_metadata",
+  "structure_draw",
+  "thermo_engine",
+  "vienna_backend",
+  "windows_bootstrap",
+]
+
+[tool.setuptools.packages.find]
+include = ["mbuprime_structlab*", "rnastructure_native*"]
+
+[tool.setuptools.package-data]
+rnastructure_native = [
+  "native_manifests/*.json",
+  "data_tables/**/*",
+]

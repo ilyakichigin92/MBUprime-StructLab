@@ -1,0 +1,95 @@
+# Python caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+!rnastructure_native/*.pyd
+/rnastructure_native/*.so
+/rnastructure_native/native_manifests/cp312-linux-x86_64.json
+!release/**/*.py[cod]
+!/release/**/__pycache__/
+!/release/**/__pycache__/*.py[cod]
+
+# Local development and build material
+/.agents/
+/.claude/
+/.github/*
+!/.github/workflows/
+/.github/workflows/*
+!/.github/workflows/ubuntu-cli-ci.yml
+!/.github/workflows/macos-cli-ci.yml
+/build/
+/.buildtmp/
+/dist/
+# Portable native-extension source is part of the source distribution.
+/native/__pycache__/
+/packaging/*
+!/packaging/install_linux_source.py
+!/packaging/cli_bootstrap.py
+!/packaging/linux_gui_bootstrap.py
+!/packaging/MBUprimeStructLabCLI.spec
+!/packaging/build_linux_cli.sh
+!/packaging/stage_linux_bundle.py
+!/packaging/verify_linux_cli_tar.py
+!/packaging/verify_macos_cli.sh
+# Published build inputs; generated provenance and scratch remain local.
+!/packaging/generate_provenance.py
+!/packaging/generate_release_evidence.py
+!/packaging/generate_ui_tokens.py
+!/packaging/make_release_zip.ps1
+!/packaging/MBUprimeStructLab.spec
+!/packaging/pyi_rth_tcltk.py
+!/packaging/RELEASE.md
+!/packaging/release_components.json
+!/packaging/release_inventory.json
+!/packaging/sign_release.ps1
+!/packaging/verify_locked_environment.py
+!/packaging/verify_release_identity.py
+!/packaging/version_info.txt
+/tests/*
+/tokens/*
+!/tokens/mbuprime_structlab.tokens.json
+!/tokens/mbuprime_structlab.registry.json
+/validation/
+# Exact corresponding source and licenses are source-package inputs.
+/vendor/*
+!/vendor/rnastructure-6.6/
+!/vendor/rnastructure-6.6/COPYING
+!/vendor/rnastructure-6.6/README.md
+!/vendor/rnastructure-6.6/RNAstructureSource.zip
+!/vendor/seqfold-0.10.2/
+!/vendor/seqfold-0.10.2/LICENSE
+packaged-self-test.log
+/CONTRIBUTING.md
+/requirements-test.txt
+/SECURITY.md
+/assets/*.svg
+!/assets/mbu_sl_laboratory_tile.svg
+
+# Local review/export scratch files
+tmp_diagram_review/
+tmp_ui_review*/
+.analysis_seqfold_src/
+.tmp-rnastructure-source-audit/
+.tmp-crossplatform-wheels/
+
+# Local analysis/report artifacts (not application source)
+/1.csv
+/1.txt
+/2.txt
+/rna_control_298.ct
+/tests/1.csv
+/tests/1.png
+/tests/1.txt
+/tests/2.csv
+/tests/2.txt
+/tests/3.txt
+/tests/4.txt
+
+# Local environments and signing credentials
+/.venv/
+/.env
+/.env.*
+*.pfx
+*.p12
+*.key

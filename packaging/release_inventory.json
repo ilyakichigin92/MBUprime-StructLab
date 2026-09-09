@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "maintained_bootstraps": {
+    "windows_bootstrap": "windows_bootstrap.py",
+    "pyi_rth_tcltk": "packaging/pyi_rth_tcltk.py"
+  },
+  "maintained_modules": {
+    "analyzed_run_archive": "analyzed_run_archive.py",
+    "app_assets": "app_assets.py",
+    "external_engines": "external_engines.py",
+    "frozen_gui_qualification": "frozen_gui_qualification.py",
+    "gui_exports": "gui_exports.py",
+    "gui_results": "gui_results.py",
+    "gui_styles": "gui_styles.py",
+    "gui_tokens_generated": "gui_tokens_generated.py",
+    "headless_geometry": "headless_geometry.py",
+    "locale_numbers": "locale_numbers.py",
+    "native_target": "native_target.py",
+    "nn_thermo": "nn_thermo.py",
+    "primer_tool_gui": "primer_tool_gui.py",
+    "rnastructure_native": "rnastructure_native/__init__.py",
+    "scientific_metadata": "scientific_metadata.py",
+    "structure_draw": "structure_draw.py",
+    "thermo_engine": "thermo_engine.py",
+    "vienna_backend": "vienna_backend.py"
+  },
+  "source_groups": {
+    "maintained_modules": {"files": ["analyzed_run_archive.py", "app_assets.py", "external_engines.py", "frozen_gui_qualification.py", "gui_exports.py", "gui_results.py", "gui_styles.py", "gui_tokens_generated.py", "headless_geometry.py", "locale_numbers.py", "native_target.py", "nn_thermo.py", "primer_tool_gui.py", "rnastructure_native/__init__.py", "scientific_metadata.py", "structure_draw.py", "thermo_engine.py", "vienna_backend.py"]},
+    "cli_package": {"files": ["mbuprime_structlab/__init__.py", "mbuprime_structlab/__main__.py", "mbuprime_structlab/cli.py"]},
+    "inventory_definition": {"files": ["packaging/release_inventory.json"]},
+    "distribution_files": {"files": ["COPYING", "CORRESPONDING_SOURCE.md", "Makefile", "MANIFEST.in", "README.md", "THIRD_PARTY_NOTICES.md", "pyproject.toml", "requirements-build.txt", "requirements.in", "requirements.txt", "run_tool.bat", "setup.py"]},
+    "scientific_lock": {"files": ["requirements-lock.txt"]},
+    "ui_assets": {"files": ["assets/generate_app_icon.py", "assets/mbu_sl_laboratory_tile.ico", "assets/mbu_sl_laboratory_tile.svg", "assets/fonts/CascadiaMono.ttf", "assets/fonts/OFL.txt", "assets/fonts/SOURCE.txt", "assets/fonts/linux-fonts.conf", "packaging/generate_ui_tokens.py"], "trees": ["tokens"]},
+    "native_build": {"files": ["native/__init__.py", "native/build_native.ps1", "native/generate_native_manifest.py", "native/rnastructure_native.cpp", "native/setup_native.py"]},
+    "native_tables": {"trees": ["rnastructure_native/data_tables"]},
+    "vendor_attestations": {"files": ["vendor/rnastructure-6.6/COPYING", "vendor/rnastructure-6.6/README.md", "vendor/rnastructure-6.6/RNAstructureSource.zip", "vendor/seqfold-0.10.2/LICENSE"]},
+    "windows_build": {"files": ["build_exe.bat", "windows_bootstrap.py", "packaging/MBUprimeStructLab.spec", "packaging/RELEASE.md", "packaging/build_cpython_windows.py", "packaging/cpython_windows_runtime.json", "packaging/generate_provenance.py", "packaging/generate_release_evidence.py", "packaging/make_release_zip.ps1", "packaging/pyi_rth_tcltk.py", "packaging/release_components.json", "packaging/sign_release.ps1", "packaging/verify_locked_environment.py", "packaging/verify_release_identity.py", "packaging/version_info.txt"]},
+    "portable_targets": {"files": ["packaging/verify_macos_cli.sh", "requirements-targets/identity.json", "requirements-targets/macos-14-arm64.txt", "requirements-targets/macos-primer3-build.txt", "requirements-targets/ubuntu-24.04-x86_64.txt", "requirements-targets/ubuntu-build-common.txt", "requirements-targets/ubuntu-source-build.txt", "requirements-targets/windows-x86_64.txt"]},
+    "linux_install": {"files": ["packaging/install_linux_source.py", "packaging/linux_gui_bootstrap.py"]},
+    "linux_bundle": {"files": ["packaging/build_linux_cli.sh", "packaging/cli_bootstrap.py", "packaging/MBUprimeStructLabCLI.spec", "packaging/stage_linux_bundle.py", "packaging/verify_linux_cli_tar.py"]}
+  },
+  "generated_artifacts": {
+    "linux_native_manifest": {"path": "rnastructure_native/native_manifests/cp312-linux-x86_64.json", "provider": "native/generate_native_manifest.py", "target": "cp312-linux-x86_64"},
+    "windows_native_manifest": {"path": "rnastructure_native/native_manifests/cp312-windows-x86_64.json", "provider": "native/generate_native_manifest.py", "target": "cp312-windows-x86_64"}
+  },
+  "targets": {
+    "windows_corresponding_source": {"groups": ["inventory_definition", "maintained_modules", "cli_package", "distribution_files", "scientific_lock", "ui_assets", "native_build", "native_tables", "vendor_attestations", "windows_build", "portable_targets", "linux_install"], "generated_artifacts": ["windows_native_manifest"]},
+    "linux_corresponding_source": {"groups": ["inventory_definition", "maintained_modules", "cli_package", "distribution_files", "scientific_lock", "ui_assets", "native_build", "native_tables", "vendor_attestations", "portable_targets", "linux_install", "linux_bundle"], "generated_artifacts": ["linux_native_manifest"]},
+    "scientific_identity": {"groups": ["inventory_definition", "maintained_modules", "scientific_lock", "native_build"], "generated_artifacts_by_target": {"cp312-linux-x86_64": "linux_native_manifest", "cp312-windows-x86_64": "windows_native_manifest"}}
+  },
+  "protected_payload_families": {
+    "corresponding_source": ["_internal/rnastructure-corresponding-source/"],
+    "mandatory_engines": ["_internal/RNA", "_internal/primer3/", "_internal/primer3_py-2.3.0.dist-info/METADATA", "_internal/rnastructure_native/", "_internal/seqfold/"],
+    "legal": ["COPYING", "LICENSE", "OFL.txt", "SOURCE.txt", "THIRD_PARTY_NOTICES.md", "_internal/licenses/", "_internal/LICENSE-MANIFEST.json", "_internal/SBOM.spdx.json"],
+    "tcl_tk_core": ["_internal/_tcl_data/", "_internal/_tk_data/tk.tcl", "_internal/_tkinter.pyd", "_internal/tcl86t.dll", "_internal/tk86t.dll"],
+    "fonts_and_exports": ["_internal/assets/fonts/", "_internal/matplotlib/mpl-data/fonts/", "matplotlib.backends.backend_agg", "matplotlib.backends.backend_pdf", "matplotlib.backends.backend_svg"],
+    "seqfold_identity": ["_internal/seqfold-0.10.2.dist-info/METADATA"]
+  },
+  "payload_allowlists": {
+    "matplotlib_fonts": {
+      "path_prefix": "matplotlib/mpl-data/fonts/",
+      "files": ["ttf/DejaVuSans.ttf", "ttf/DejaVuSans-Bold.ttf", "ttf/LastResortHE-Regular.ttf", "ttf/LICENSE_DEJAVU", "ttf/LICENSE_STIX"]
+    }
+  },
+  "clean_build_exclusions": {
+    "layers": ["physical", "pyz", "carchive", "hooks"],
+    "families": {
+      "verified_residue": {"enforced_layers": ["physical"], "module_prefixes": ["numpy._core._multiarray_tests"], "path_prefixes": ["primer3/src/libprimer3/klib/test/", "_tk_data/tcl8/8.5/tcltest", "tcl8/8.5/tcltest", "matplotlib/mpl-data/images/", "matplotlib/mpl-data/stylelib/", "matplotlib/mpl-data/plot_directive/"], "path_globs": ["mbuprime_structlab.egg-info/*", "mbuprime_structlab-*.egg-info/*", "primer3/src/libprimer3/long_seq_tm_test_main.c", "matplotlib/mpl-data/kpsewhich.lua", "viennarna-*.dist-info/METADATA"]},
+      "contour_triangulation": {"enforced_layers": ["physical"], "path_globs": ["contourpy/_contourpy*.pyd", "matplotlib/_tri*.pyd", "matplotlib/_qhull*.pyd"]},
+      "numpy_fft": {"enforced_layers": ["physical"], "path_globs": ["numpy/fft/_pocketfft_umath*.pyd"]},
+      "numpy_random": {"enforced_layers": ["physical"], "path_globs": ["numpy/random/_bounded_integers*.pyd", "numpy/random/_common*.pyd", "numpy/random/_generator*.pyd", "numpy/random/_mt19937*.pyd", "numpy/random/_pcg64*.pyd", "numpy/random/_philox*.pyd", "numpy/random/_sfc64*.pyd", "numpy/random/bit_generator*.pyd", "numpy/random/mtrand*.pyd"]},
+      "asyncio_overlapped": {"enforced_layers": ["physical"], "path_globs": ["_asyncio.pyd", "_overlapped.pyd"]},
+      "multiprocessing": {"enforced_layers": ["physical"], "path_globs": ["_multiprocessing.pyd"]},
+      "wmi": {"enforced_layers": ["physical"], "path_globs": ["_wmi.pyd"]},
+      "ssl": {"enforced_layers": ["physical"], "path_globs": ["_ssl.pyd", "libssl-3.dll"]},
+      "ambient_build_modules": {"enforced_layers": ["physical", "pyz"], "module_prefixes": ["typing_extensions", "threadpoolctl"], "path_globs": ["typing_extensions.py", "typing_extensions-*.dist-info/*", "threadpoolctl.py", "threadpoolctl-*.dist-info/*", "licenses/python-typing-extensions/*", "licenses/python-threadpoolctl/*"], "evidence_component_ids": ["python-typing-extensions", "python-threadpoolctl"]}
+    }
+  }
+}

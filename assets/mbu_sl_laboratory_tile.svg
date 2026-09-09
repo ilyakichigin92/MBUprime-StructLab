@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"
+     role="img" aria-labelledby="title description">
+  <title id="title">MBU SL laboratory tile</title>
+  <desc id="description">A teal rounded laboratory tile with white MBU above heavier white SL lettering and a pale mint base-pair rung.</desc>
+  <rect x="8" y="8" width="240" height="240" rx="42" fill="#087E72"/>
+  <g aria-label="MBU" fill="none" stroke="#FFFFFF" stroke-width="8"
+     stroke-linecap="round" stroke-linejoin="round">
+    <path d="M48 92V43L68 73L88 43V92"/>
+    <path d="M106 43V92M106 43H124C139 43 139 67 124 67H106M124 67C143 67 143 92 124 92H106"/>
+    <path d="M163 43V73C163 99 202 99 202 73V43"/>
+  </g>
+  <g aria-label="base-pair rung" fill="none" stroke="#DCEFEB" stroke-width="6"
+     stroke-linecap="round">
+    <path d="M111 111V127M145 111V127"/>
+  </g>
+  <g aria-label="SL" fill="none" stroke="#FFFFFF" stroke-width="11"
+     stroke-linecap="round" stroke-linejoin="round">
+    <path d="M101 151C91 137 62 140 62 158C62 176 103 169 103 191C103 211 69 217 57 198"/>
+    <path d="M145 144V209H202"/>
+  </g>
+</svg>
