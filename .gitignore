@@ -3,21 +3,12 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 *.egg-info/
-!rnastructure_native/*.pyd
 /rnastructure_native/*.so
 /rnastructure_native/native_manifests/cp312-linux-x86_64.json
-!release/**/*.py[cod]
-!/release/**/__pycache__/
-!/release/**/__pycache__/*.py[cod]
 
 # Local development and build material
 /.agents/
 /.claude/
-/.github/*
-!/.github/workflows/
-/.github/workflows/*
-!/.github/workflows/ubuntu-cli-ci.yml
-!/.github/workflows/macos-cli-ci.yml
 /build/
 /.buildtmp/
 /dist/
@@ -46,7 +37,6 @@ __pycache__/
 !/packaging/verify_locked_environment.py
 !/packaging/verify_release_identity.py
 !/packaging/version_info.txt
-/tests/*
 /tokens/*
 !/tokens/mbuprime_structlab.tokens.json
 !/tokens/mbuprime_structlab.registry.json
@@ -60,11 +50,6 @@ __pycache__/
 !/vendor/seqfold-0.10.2/
 !/vendor/seqfold-0.10.2/LICENSE
 packaged-self-test.log
-/CONTRIBUTING.md
-/requirements-test.txt
-/SECURITY.md
-/assets/*.svg
-!/assets/mbu_sl_laboratory_tile.svg
 
 # Local review/export scratch files
 tmp_diagram_review/
@@ -93,3 +78,17 @@ tmp_ui_review*/
 *.pfx
 *.p12
 *.key
+
+# Local test inputs and generated output; synthetic fixtures live in test code.
+/tests/*.json
+/tests/*.csv
+/tests/*.png
+/tests/*.txt
+*.so
+*.pyd
+/release/
+/.codex/
+/packaging/release_provenance.json
+!/packaging/build_cpython_windows.py
+!/packaging/cpython_windows_runtime.json
+!/packaging/verify_source_distribution.py

@@ -2,29 +2,22 @@
 
 ## Current release status
 
-The local app 2.4.3 deliverable is an **unsigned development** release. It is
+The Windows app 2.4.3 deliverable is an **unsigned development** release. It is
 never classified as trusted. Windows 10 22H2 and Windows 11 x64 are the
 support targets; runtime verification evidence applies to its recorded host; a 32-bit Windows loader may reject the AMD64 executable before
 Tk can display an error.
 
 Executed host evidence is Windows 10 22H2 build 19045. Windows 11 is an intended
 support target with clean-host qualification pending, not a verified platform.
-The distinct candidate version is 2.4.3; use `v2.4.3` if a release owner later
-creates a reviewed public tag. Preparing this candidate does not create that tag.
-
-| Tree or artifact | App | Manifest schema | Scientific policy |
-|---|---:|---:|---|
-| Current source and isolated staging `dist/` build target | 2.4.3 | 7 | `2026-09-08-context-retention-and-duplex-offsets-1` |
-| Preserved original-project `dist/` candidate | 2.4.1 | 7 | `2026-09-08-context-retention-and-duplex-offsets-1` |
-| Preserved `release/` snapshot and its bundled provenance | 2.4.0 | 7 | `2026-09-02-exact-engine-and-concrete-coverage-1` |
-
-The 2.4.3 qualification build runs in a separate staging checkout. Its `dist/`
-contains the new candidate; the original project's 2.4.1 EXE, ZIP and sidecars
-remain preserved. Paths below are relative to the selected build checkout.
+The published version is [v2.4.3](https://github.com/ilyakichigin92/MBUprime-StructLab/releases/tag/v2.4.3).
+The current source targets app 2.4.3, manifest schema 7, and scientific policy
+`2026-09-08-context-retention-and-duplex-offsets-1`. New builds use `dist/` in the
+selected checkout. Preserve existing release assets and their bundled source
+identities; source-only changes do not retroactively certify them.
 
 `python packaging\verify_release_identity.py source` fails unless generated
 checkout provenance matches the current source identity, source-tree hash, and
-exact dependency-lock hash. It does not assert that the preserved `release/`
+exact dependency-lock hash. It does not assert that an existing release
 snapshot contains later checkout changes. The package verifier additionally
 binds each maintained PYZ module and bootstrap to its shipped source compiled
 with `optimize=1`, retaining nested logic and constants while normalizing build
@@ -96,15 +89,14 @@ SmartScreen reputation, or AppLocker, WDAC, antivirus, or EDR allowlisting.
 Public source includes the build entry points, native sources, pinned upstream
 archive, runtime/build locks, asset generators and token inputs, packaging
 specifications, corresponding-source inventory, and release verification tools.
-Generated `build/`, `dist/`, local provenance, private signing material, tests,
-Windows CI, and analysis records remain excluded. Existing Ubuntu/macOS workflow
-definitions are included; native verification is still pending.
+The public checkout also includes curated tests, examples, contributor guidance
+and workflow definitions. These are distinct from the executable payload and the
+corresponding-source file selection. Generated `build/`, `dist/`, local provenance,
+private signing material and private analysis records must remain untracked.
+Ubuntu/macOS native qualification remains pending.
 
-Review the explicit file selection before committing. Do not use an unreviewed
-`git add .` to publish this working tree. Adding build tooling does not itself
-build, promote, sign, tag, or upload a release. The local test suite and Windows
-release workflow are maintainer resources, not files promised by this public
-checkout. This repository has no configured remote at the time of this change.
+Review explicit file selection before publication. Preparing source or build tooling
+does not itself build, promote, sign, tag or upload a release.
 
 Use the qualified private 64-bit CPython 3.12.14 environment for the Windows pipeline; the
 `requirements-build.txt` lock installs its runtime and build dependencies. The
@@ -116,17 +108,16 @@ that generated local file is not a source-install input.
 For an sdist, run `python setup.py sdist` from a source tree on a supported
 CPython 3.12 host with the pinned setuptools installed. Metadata preparation
 verifies and extracts the vendored archive but does not compile the extension.
-The sdist carries the same build inputs and excludes binaries, tests, workflows,
-and generated work directories. A later wheel/install builds the target-specific
+The sdist carries the same build inputs and excludes binaries, workflows and generated work directories.
+Inspect `MANIFEST.in` for the maintained documentation, example and test selection. A later wheel/install builds the target-specific
 extension and embeds scientific provenance. Installing scientific dependencies
 still requires the appropriate hashed target lock before `pip install --no-deps
 --no-build-isolation .`.
 
 The output ZIP carries the complete onedir package, licensing notices, and
 path-preserving corresponding source under `_internal`. Verify its SHA-256
-sidecar before extraction. Promotion to `release/` and any public upload are
-separate reviewed actions. Preserve the existing unsigned release while
-preparing source changes; new source hashes do not certify an older binary.
+sidecar before extraction. Publication and any public upload are separate delivery actions. Preserve existing
+unsigned release assets while preparing source changes; new source hashes do not certify an older binary.
 
 ## Application and archive layout
 

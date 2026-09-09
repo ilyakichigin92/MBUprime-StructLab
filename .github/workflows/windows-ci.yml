@@ -1,0 +1,59 @@
+name: Windows source and regression validation
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-validation-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  windows-source:
+    runs-on: windows-2022
+    timeout-minutes: 90
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.12.10"
+          architecture: x64
+      - name: Build hash-verified CPython 3.12.14 and private Tk runtime
+        run: python packaging/build_cpython_windows.py --workdir "$env:RUNNER_TEMP/cpython-build" --cache "$env:RUNNER_TEMP/cpython-downloads"
+      - name: Install and verify exact test and build requirements
+        run: |
+          python -c "import sys,struct; assert sys.version_info[:3] == (3,12,14); assert struct.calcsize('P') == 8"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m pip install --disable-pip-version-check --require-hashes --only-binary=:all: -r requirements-test.txt
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python packaging/verify_locked_environment.py requirements-test.txt
+      - name: Fast regression checks
+        run: python -m pytest -q -m "not engine and not gui"
+      - name: Compile checkout native extension
+        env:
+          _CL_: /MP1
+        run: python native/setup_native.py build_ext --inplace
+      - name: Scientific engines and export regressions
+        run: python -m pytest -q -m engine
+      - name: Isolated Tk keyboard regression
+        run: python -m pytest -q -m gui
+      - name: Clean sdist content and extracted native wheel gate
+        run: python packaging/verify_source_distribution.py --workdir "$env:RUNNER_TEMP/source-distribution"
+      - name: Retain build diagnostics
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: windows-source-validation-logs
+          path: |
+            ${{ runner.temp }}/cpython-build/*.log
+            ${{ runner.temp }}/source-distribution/*.log
+          if-no-files-found: ignore
+          retention-days: 14

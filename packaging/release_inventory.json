@@ -25,6 +25,7 @@
     "vienna_backend": "vienna_backend.py"
   },
   "source_groups": {
+    "public_navigation": {"files": ["CONTRIBUTING.md", "CITATION.cff"], "trees": ["docs", "examples"]},
     "maintained_modules": {"files": ["analyzed_run_archive.py", "app_assets.py", "external_engines.py", "frozen_gui_qualification.py", "gui_exports.py", "gui_results.py", "gui_styles.py", "gui_tokens_generated.py", "headless_geometry.py", "locale_numbers.py", "native_target.py", "nn_thermo.py", "primer_tool_gui.py", "rnastructure_native/__init__.py", "scientific_metadata.py", "structure_draw.py", "thermo_engine.py", "vienna_backend.py"]},
     "cli_package": {"files": ["mbuprime_structlab/__init__.py", "mbuprime_structlab/__main__.py", "mbuprime_structlab/cli.py"]},
     "inventory_definition": {"files": ["packaging/release_inventory.json"]},
@@ -44,8 +45,8 @@
     "windows_native_manifest": {"path": "rnastructure_native/native_manifests/cp312-windows-x86_64.json", "provider": "native/generate_native_manifest.py", "target": "cp312-windows-x86_64"}
   },
   "targets": {
-    "windows_corresponding_source": {"groups": ["inventory_definition", "maintained_modules", "cli_package", "distribution_files", "scientific_lock", "ui_assets", "native_build", "native_tables", "vendor_attestations", "windows_build", "portable_targets", "linux_install"], "generated_artifacts": ["windows_native_manifest"]},
-    "linux_corresponding_source": {"groups": ["inventory_definition", "maintained_modules", "cli_package", "distribution_files", "scientific_lock", "ui_assets", "native_build", "native_tables", "vendor_attestations", "portable_targets", "linux_install", "linux_bundle"], "generated_artifacts": ["linux_native_manifest"]},
+    "windows_corresponding_source": {"groups": ["public_navigation", "inventory_definition", "maintained_modules", "cli_package", "distribution_files", "scientific_lock", "ui_assets", "native_build", "native_tables", "vendor_attestations", "windows_build", "portable_targets", "linux_install"], "generated_artifacts": ["windows_native_manifest"]},
+    "linux_corresponding_source": {"groups": ["public_navigation", "inventory_definition", "maintained_modules", "cli_package", "distribution_files", "scientific_lock", "ui_assets", "native_build", "native_tables", "vendor_attestations", "portable_targets", "linux_install", "linux_bundle"], "generated_artifacts": ["linux_native_manifest"]},
     "scientific_identity": {"groups": ["inventory_definition", "maintained_modules", "scientific_lock", "native_build"], "generated_artifacts_by_target": {"cp312-linux-x86_64": "linux_native_manifest", "cp312-windows-x86_64": "windows_native_manifest"}}
   },
   "protected_payload_families": {

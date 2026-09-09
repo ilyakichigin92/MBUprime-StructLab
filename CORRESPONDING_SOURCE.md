@@ -2,16 +2,16 @@
 
 ## Current status
 
-`JUD-20260824-001` is closed. The checked staging tree includes the token/icon
-generators, icon assets, generated tokens, and runtime asset module needed by
-`build_exe.bat`; `source-manifest.json` covers every staged member.
+The public source target is app 2.4.3, manifest schema 7, scientific policy
+`2026-09-08-context-retention-and-duplex-offsets-1`. Each binary carries its own
+path-preserving corresponding-source tree and `source-manifest.json` under
+`_internal/rnastructure-corresponding-source/`. The token/icon generators, assets,
+generated tokens and runtime asset module are maintained rebuild inputs.
 
-The current source target is app 2.4.3, manifest schema 7, policy
-`2026-09-08-context-retention-and-duplex-offsets-1`. The locally built
-distribution targets app 2.4.3, manifest schema 7, and this policy.
-The preserved `release/` snapshot uses the earlier
-`2026-09-02-exact-engine-and-concrete-coverage-1` policy. A new build goes to
-`dist/`; it does not replace that snapshot.
+New builds go to `dist/`. Existing published releases retain their original source
+snapshots and hashes; later checkout edits do not change or certify those binaries.
+See [the release contract](packaging/RELEASE.md) for the full build procedure.
+
 Version-level agreement alone does not establish source identity. Use
 `python packaging/verify_release_identity.py source` to compare live source
 with generated provenance; the packaged corresponding-source manifest records
@@ -26,7 +26,7 @@ exception handling and nested code must match.
 ## Rebuild procedure
 
 The release source tree preserves every project-relative path expected by the
-build scripts. The supported build target is 64-bit CPython 3.12 with Microsoft
+build scripts. The supported build target is exactly 64-bit CPython 3.12.14 with Microsoft
 Visual C++ Build Tools on Windows.
 
 1. Install the exact Python build environment with
@@ -47,10 +47,13 @@ extraction. The target-qualified native manifest records the exact
 extension, wrapper sources, and compatibility-table identities. Runtime code
 rejects any missing, extra, or modified table.
 
-The source staging also carries `windows_bootstrap.py`, the onedir PyInstaller
+The corresponding-source tree also carries `windows_bootstrap.py`, the onedir PyInstaller
 spec and Windows version resource, signing/package/verifier scripts, the
 privately bundled Cascadia Mono font, `OFL.txt`, and `SOURCE.txt`. These inputs
 are shipped at `_internal/rnastructure-corresponding-source/` in the flat release
 layout. They rebuild the complete application folder; they neither establish
 publisher identity nor authorize treating an unsigned development artifact as
 trusted.
+
+The pinned RNAstructure source archive SHA-256 is
+`4e30fa06f10a89556ad070c8d141fff6090165c330df786e19f9627df4407fd4`.
