@@ -2,23 +2,23 @@
 
 ## Current release status
 
-The local app 2.4.2 deliverable is an **unsigned development** release. It is
+The local app 2.4.3 deliverable is an **unsigned development** release. It is
 never classified as trusted. Windows 10 22H2 and Windows 11 x64 are the
 support targets; runtime verification evidence applies to its recorded host; a 32-bit Windows loader may reject the AMD64 executable before
 Tk can display an error.
 
 Executed host evidence is Windows 10 22H2 build 19045. Windows 11 is an intended
 support target with clean-host qualification pending, not a verified platform.
-The distinct candidate version is 2.4.2; use `v2.4.2` if a release owner later
+The distinct candidate version is 2.4.3; use `v2.4.3` if a release owner later
 creates a reviewed public tag. Preparing this candidate does not create that tag.
 
 | Tree or artifact | App | Manifest schema | Scientific policy |
 |---|---:|---:|---|
-| Current source and isolated staging `dist/` build target | 2.4.2 | 7 | `2026-09-08-context-retention-and-duplex-offsets-1` |
+| Current source and isolated staging `dist/` build target | 2.4.3 | 7 | `2026-09-08-context-retention-and-duplex-offsets-1` |
 | Preserved original-project `dist/` candidate | 2.4.1 | 7 | `2026-09-08-context-retention-and-duplex-offsets-1` |
 | Preserved `release/` snapshot and its bundled provenance | 2.4.0 | 7 | `2026-09-02-exact-engine-and-concrete-coverage-1` |
 
-The 2.4.2 qualification build runs in a separate staging checkout. Its `dist/`
+The 2.4.3 qualification build runs in a separate staging checkout. Its `dist/`
 contains the new candidate; the original project's 2.4.1 EXE, ZIP and sidecars
 remain preserved. Paths below are relative to the selected build checkout.
 
@@ -146,9 +146,9 @@ release probes from hanging.
 
 The unsigned output names are:
 
-- `dist\MBUprime-StructLab-2.4.2-windows-x64-unsigned.zip`
-- `dist\MBUprime-StructLab-2.4.2-windows-x64-unsigned.zip.sha256`
-- `dist\MBUprime-StructLab-2.4.2-windows-x64-unsigned.release-manifest.json`
+- `dist\MBUprime-StructLab-2.4.3-windows-x64-unsigned.zip`
+- `dist\MBUprime-StructLab-2.4.3-windows-x64-unsigned.zip.sha256`
+- `dist\MBUprime-StructLab-2.4.3-windows-x64-unsigned.release-manifest.json`
 - `dist\MBUprime StructLab.exe.sha256`
 - `dist\MBUprime StructLab.signing-attestation.json`
 
@@ -164,7 +164,7 @@ sidecar and signing attestation also remain external `dist` release assets. The
 release manifest records recursive post-sign file identities. Its ZIP self-hash
 remains external because an archive cannot contain a stable hash of itself.
 
-Analyzed runs are a separate user-data format. App 2.4.2 writes deterministic
+Analyzed runs are a separate user-data format. App 2.4.3 writes deterministic
 ZIP64/DEFLATE schema-2 `.mbusl-run` archives with ten fixed members and
 line-streamed JSONL result records. Legacy schema-1 JSON is import-only. The
 reader accepts at most 5,000,000 aggregate JSONL records, 256 MiB compressed,

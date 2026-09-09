@@ -1377,8 +1377,8 @@ class MBUprimeStructLabApp(ttk.Frame):
         except gui_exports.PersistenceError as error:
             self._preset_load_error = error
         self._sequence_length_labels: list[tuple[tk.StringVar, ttk.Label]] = []
-        self._language_code = "ru"
-        self._language_var = tk.StringVar(value=_LANGUAGE_NAMES["ru"])
+        self._language_code = "en"
+        self._language_var = tk.StringVar(value=_LANGUAGE_NAMES["en"])
         self._ensemble_complete_var = tk.BooleanVar(value=True)
         self._ensemble_budget_var = tk.StringVar(
             value=str(te.DEFAULT_ENSEMBLE_ADDITIONAL_BUDGET))

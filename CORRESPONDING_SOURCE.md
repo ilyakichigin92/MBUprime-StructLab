@@ -6,9 +6,9 @@
 generators, icon assets, generated tokens, and runtime asset module needed by
 `build_exe.bat`; `source-manifest.json` covers every staged member.
 
-The current source target is app 2.4.2, manifest schema 7, policy
+The current source target is app 2.4.3, manifest schema 7, policy
 `2026-09-08-context-retention-and-duplex-offsets-1`. The locally built
-distribution targets app 2.4.2, manifest schema 7, and this policy.
+distribution targets app 2.4.3, manifest schema 7, and this policy.
 The preserved `release/` snapshot uses the earlier
 `2026-09-02-exact-engine-and-concrete-coverage-1` policy. A new build goes to
 `dist/`; it does not replace that snapshot.

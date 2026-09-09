@@ -65,7 +65,7 @@ jobs:
         with:
           name: mbuprime-structlab-ubuntu24.04-x86_64-unverified
           path: |
-            dist/mbuprime-structlab-2.4.2-ubuntu24.04-x86_64.tar.gz
-            dist/mbuprime-structlab-2.4.2-ubuntu24.04-x86_64.tar.gz.sha256
+            dist/mbuprime-structlab-2.4.3-ubuntu24.04-x86_64.tar.gz
+            dist/mbuprime-structlab-2.4.3-ubuntu24.04-x86_64.tar.gz.sha256
           if-no-files-found: error
           retention-days: 14
