@@ -5,7 +5,7 @@ Analyze a single assay or a multiplex panel. Analysis runs locally; sequences an
 results are not uploaded to an external service.
 
 **[Download for Windows x64 — latest release](https://github.com/ilyakichigin92/MBUprime-StructLab/releases/latest)**
-· [v2.4.3 release notes and SHA-256 files](https://github.com/ilyakichigin92/MBUprime-StructLab/releases/tag/v2.4.3)
+· [v2.4.4 release notes and SHA-256 files](https://github.com/ilyakichigin92/MBUprime-StructLab/releases/tag/v2.4.4)
 · [User guide](docs/user-guide.md) · [Report an issue](https://github.com/ilyakichigin92/MBUprime-StructLab/issues)
 
 The Windows ZIP includes Python and all four scientific engines. It is **unsigned**:

@@ -2,8 +2,10 @@
 
 ## Current status
 
-The public source target is app 2.4.3, manifest schema 7, scientific policy
-`2026-09-08-context-retention-and-duplex-offsets-1`. Each binary carries its own
+The current source target is app 2.4.4, manifest schema 7, policy
+`2026-09-08-context-retention-and-duplex-offsets-1`.
+The locally built distribution targets app 2.4.4, manifest schema 7, and this policy.
+Each binary carries its own
 path-preserving corresponding-source tree and `source-manifest.json` under
 `_internal/rnastructure-corresponding-source/`. The token/icon generators, assets,
 generated tokens and runtime asset module are maintained rebuild inputs.

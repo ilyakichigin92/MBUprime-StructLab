@@ -22,7 +22,7 @@ python -c "from native_target import current_target; from rnastructure_native im
 python packaging/stage_linux_bundle.py
 python -m PyInstaller --clean --noconfirm packaging/MBUprimeStructLabCLI.spec
 
-archive="dist/mbuprime-structlab-2.4.3-ubuntu24.04-x86_64.tar.gz"
+archive="dist/mbuprime-structlab-2.4.4-ubuntu24.04-x86_64.tar.gz"
 archive_name="$(basename "$archive")"
 tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner \
   -C dist -czf "$archive" mbuprime-structlab-linux-x86_64

@@ -1349,6 +1349,190 @@ def _frozen_self_test_with_root(root: tk.Tk, progress=None) -> dict[str, str]:
     return result
 
 
+class _ScrollablePane(ttk.Frame):
+    """Keep the original pane's requested height inside an independent viewport.
+
+    Width floors come from controls and tab labels, never scrollable table
+    columns or text. An overflowing pane therefore cannot enlarge the window.
+    """
+
+    def __init__(self, master, *, style):
+        super().__init__(master, width=1, height=1, style=style)
+        self.columnconfigure(0, weight=1)
+        self.rowconfigure(0, weight=1)
+        self.canvas = tk.Canvas(self, width=1, height=1,
+                                highlightthickness=0, bg=_UI["surface"])
+        self.canvas.grid(row=0, column=0, sticky="nsew")
+        self.xbar = ttk.Scrollbar(self, orient="horizontal", command=self.canvas.xview)
+        self.ybar = ttk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
+        self.canvas.configure(xscrollcommand=self.xbar.set, yscrollcommand=self.ybar.set)
+        self.content = ttk.Frame(self.canvas, style=style)
+        self.content.columnconfigure(0, weight=1)
+        self.content.rowconfigure(0, weight=1)
+        self._window = self.canvas.create_window(0, 0, anchor="nw", window=self.content)
+        self._pending = None
+        self._tag = f"Viewport:{self}"
+        self._binding_commands = []
+        self.canvas.bind("<Configure>", self.refresh, add="+")
+        self.content.bind("<Configure>", self.refresh, add="+")
+        self.bind("<Destroy>", self._destroy_bindings, add="+")
+
+    @staticmethod
+    def _padding(widget, option):
+        try:
+            values = widget.tk.splitlist(widget.cget(option))
+            numbers = [widget.winfo_pixels(value) for value in values]
+        except (tk.TclError, ValueError, TypeError):
+            return 0
+        if not numbers:
+            return 0
+        if len(numbers) >= 3:
+            return numbers[0] + numbers[2]
+        return numbers[0] * 2
+
+    def _control_width(self, widget):
+        if isinstance(widget, (tk.Text, tk.Canvas, ttk.Treeview, ttk.Scrollbar)):
+            return 0  # These widgets already provide their own scrolling.
+        if isinstance(widget, (tk.Label, ttk.Label)):
+            wrap = widget.winfo_pixels(widget.cget("wraplength") or 0)
+            if wrap > 150:
+                return 0  # Prose wraps to its pane, never enlarges that pane.
+        children = [child for child in widget.winfo_children()
+                    if child.winfo_manager()]
+        if not children:
+            return widget.winfo_reqwidth()
+        inset = self._padding(widget, "padding")
+        if isinstance(widget, ttk.Notebook):
+            style = ttk.Style(widget)
+            tab_style = (widget.cget("style") or "TNotebook") + ".Tab"
+            font = tkfont.Font(root=widget, font=style.lookup(tab_style, "font"))
+            padding = style.lookup(tab_style, "padding")
+            sides = [widget.winfo_pixels(value) for value in widget.tk.splitlist(padding)]
+            tab_padding = 2 * (sides[0] if sides else _SPACE["sm"])
+            tabs = sum(font.measure(widget.tab(tab, "text")) + tab_padding + 4
+                       for tab in widget.tabs())
+            return max(tabs, *(self._control_width(child) for child in children)) + inset
+        rows = {}
+        packed_horizontal = 0
+        packed_vertical = 0
+        for child in children:
+            width = self._control_width(child)
+            if child.winfo_manager() == "grid":
+                info = child.grid_info()
+                padx = ((info["padx"],) if isinstance(info["padx"], int)
+                        else child.tk.splitlist(info["padx"]))
+                width += sum(map(int, padx)) * (2 if len(padx) == 1 else 1)
+                row = int(info["row"])
+                rows[row] = rows.get(row, 0) + width
+            elif child.winfo_manager() == "pack":
+                info = child.pack_info()
+                padx = ((info["padx"],) if isinstance(info["padx"], int)
+                        else child.tk.splitlist(info["padx"]))
+                width += sum(map(int, padx)) * (2 if len(padx) == 1 else 1)
+                if info["side"] in ("left", "right"):
+                    packed_horizontal += width
+                else:
+                    packed_vertical = max(packed_vertical, width)
+        return max([packed_horizontal, packed_vertical, *rows.values()]) + inset
+
+    def refresh(self, _event=None):
+        if self._pending is None:
+            self._pending = self.after_idle(self._layout)
+
+    def _layout(self):
+        self._pending = None
+        width = max(1, self.winfo_width())
+        height = max(1, self.winfo_height())
+        minimum_width = self._control_width(self.content)
+        # Start without bars and settle the two dependent overflow decisions.
+        need_x = need_y = False
+        minimum_height = self.content.winfo_reqheight()
+        for _ in range(3):
+            view_width = width - (self.ybar.winfo_reqwidth() if need_y else 0)
+            view_height = height - (self.xbar.winfo_reqheight() if need_x else 0)
+            need_x = minimum_width > view_width
+            need_y = minimum_height > view_height
+        if need_x:
+            self.xbar.grid(row=1, column=0, sticky="ew")
+        else:
+            self.xbar.grid_remove()
+        if need_y:
+            self.ybar.grid(row=0, column=1, sticky="ns")
+        else:
+            self.ybar.grid_remove()
+        view_width = max(1, width - (self.ybar.winfo_reqwidth() if need_y else 0))
+        view_height = max(1, height - (self.xbar.winfo_reqheight() if need_x else 0))
+        content_width = max(minimum_width, view_width)
+        content_height = max(minimum_height, view_height)
+        self.canvas.itemconfigure(self._window, width=content_width, height=content_height)
+        self.canvas.configure(scrollregion=(0, 0, content_width, content_height))
+        if not need_x:
+            self.canvas.xview_moveto(0)
+        if not need_y:
+            self.canvas.yview_moveto(0)
+
+    def reveal(self, widget):
+        """Reveal an existing control on both axes without transferring focus."""
+        if not widget.winfo_viewable():
+            return
+        # Moving the canvas can complete pending geometry for translated or
+        # expanded controls. Recheck after idle layout, without pumping input.
+        for _ in range(3):
+            self.update_idletasks()
+            for axis, position, extent, total, view in (
+                ("x", widget.winfo_rootx() - self.content.winfo_rootx(),
+                 widget.winfo_width(), self.content.winfo_width(), self.canvas.winfo_width()),
+                ("y", widget.winfo_rooty() - self.content.winfo_rooty(),
+                 widget.winfo_height(), self.content.winfo_height(), self.canvas.winfo_height()),
+            ):
+                current = getattr(self.canvas, f"canvas{axis}")(0)
+                target = current
+                if (axis == "x" and extent > view and
+                        isinstance(widget, (ttk.Button, ttk.Menubutton))):
+                    target = position + (extent - view) / 2
+                elif position < current or extent > view:
+                    target = position
+                elif position + extent > current + view:
+                    target = position + extent - view
+                getattr(self.canvas, f"{axis}view_moveto")(max(0, target) / max(1, total))
+
+    def _wheel(self, event):
+        if isinstance(event.widget, (tk.Text, ttk.Treeview, tk.Canvas,
+                                     ttk.Combobox, ttk.Scrollbar)):
+            return None
+        delta = (-1 if event.num == 4 else 1) if getattr(event, "num", None) in (4, 5) else -int(event.delta / 120)
+        if delta:
+            axis = "x" if event.state & _SHIFT_MASK else "y"
+            getattr(self.canvas, f"{axis}view_scroll")(delta * 3, "units")
+            return "break"
+
+    def install_bindings(self):
+        def attach(widget):
+            tags = widget.bindtags()
+            widget.bindtags((*tags[:-1], self._tag, tags[-1]))
+            for child in widget.winfo_children():
+                attach(child)
+        attach(self.content)
+        self._binding_commands.append(self.bind_class(
+            self._tag, "<FocusIn>", lambda event: self.reveal(event.widget)))
+        # A child's request can grow while the embedded frame's allocated
+        # rectangle stays unchanged; observing only that frame misses overflow.
+        self._binding_commands.append(self.bind_class(
+            self._tag, "<Configure>", self.refresh))
+        for sequence in ("<MouseWheel>", "<Button-4>", "<Button-5>"):
+            self._binding_commands.append(self.bind_class(self._tag, sequence, self._wheel))
+
+    def _destroy_bindings(self, event):
+        if event.widget is not self:
+            return
+        if self._pending is not None:
+            self.after_cancel(self._pending)
+        for sequence in ("<FocusIn>", "<Configure>", "<MouseWheel>", "<Button-4>", "<Button-5>"):
+            self.unbind_class(self._tag, sequence)
+        for command in self._binding_commands:
+            self._root().deletecommand(command)
+
+
 class MBUprimeStructLabApp(ttk.Frame):
     def __init__(self, master: tk.Tk):
         super().__init__(master, padding=_SPACE["md"], style="Workbench.TFrame")
@@ -1445,6 +1629,8 @@ class MBUprimeStructLabApp(ttk.Frame):
         self._build_actions()
         self._build_results()
         self._apply_language()
+        self._setup_scroll.install_bindings()
+        self._workspace_scroll.install_bindings()
         if self._preset_load_error is not None:
             self.after_idle(self._show_preset_load_error)
 
@@ -1796,23 +1982,38 @@ class MBUprimeStructLabApp(ttk.Frame):
 
     def _build_shell(self):
         workbench = ttk.PanedWindow(self, orient=tk.HORIZONTAL)
+        self._workbench = workbench
         workbench.grid(row=0, column=0, sticky="nsew")
 
-        self._setup_pane = ttk.Frame(
-            workbench, width=_DIMEN["sidebar_width"],
-            padding=(0, 0, _SPACE["md"], 0),
-            style="Rail.TFrame")
+        self._setup_scroll = _ScrollablePane(workbench, style="Rail.TFrame")
+        self._setup_pane = self._setup_scroll.content
+        self._setup_pane.configure(padding=(0, 0, _SPACE["md"], 0))
         self._setup_pane.columnconfigure(0, weight=1)
         self._setup_pane.rowconfigure(0, weight=1)
 
-        self._workspace_pane = ttk.Frame(
-            workbench, padding=(_SPACE["md"], 0, 0, 0),
-            style="Workspace.TFrame")
+        self._workspace_scroll = _ScrollablePane(workbench, style="Workspace.TFrame")
+        self._workspace_pane = self._workspace_scroll.content
+        self._workspace_pane.configure(padding=(_SPACE["md"], 0, 0, 0))
         self._workspace_pane.columnconfigure(0, weight=1)
         self._workspace_pane.rowconfigure(0, weight=1)
 
-        workbench.add(self._setup_pane, weight=0)
-        workbench.add(self._workspace_pane, weight=1)
+        workbench.add(self._setup_scroll, weight=38)
+        workbench.add(self._workspace_scroll, weight=62)
+        self._initial_sash = True
+        workbench.bind("<Configure>", self._size_workbench, add="+")
+
+    def _size_workbench(self, event):
+        if event.width < 2:
+            return
+        if self._initial_sash:
+            self._initial_sash = False
+            self._workbench.sashpos(0, int(event.width * .38))
+        else:
+            # Preserve the user's divider, clamping only when resizing would
+            # otherwise hide an entire pane.
+            minimum = min(120, event.width // 3)
+            position = self._workbench.sashpos(0)
+            self._workbench.sashpos(0, max(minimum, min(position, event.width - minimum)))
 
     # ------------------------------------------------------------------ #
     # Input widgets
@@ -3494,6 +3695,8 @@ class MBUprimeStructLabApp(ttk.Frame):
             state="disabled" if busy or not self._last_report else "normal")
         self.import_run_btn.config(state="disabled" if busy else "normal")
         self.update_idletasks()
+        if busy and hasattr(self, "_setup_scroll"):
+            self._setup_scroll.reveal(self.cancel_btn)
 
     def _populate(self, oligos, report: te.AnalysisReport):
         # Register the entire replacement view before a synchronous sub-job can
@@ -4796,8 +4999,10 @@ def main(root: tk.Tk | None = None) -> None:
         preflight_thread.start()
     try:
         root.title(PRODUCT_NAME)
-        root.geometry("1180x760")
-        root.minsize(1020, 660)
+        width = min(1180, max(1, root.winfo_screenwidth() - 40))
+        height = min(760, max(1, root.winfo_screenheight() - 100))
+        root.geometry(f"{width}x{height}")
+        root.minsize(min(800, width), min(600, height))
         MBUprimeStructLabApp(root)
         if preflight_thread is not None:
             preflight_thread.join()

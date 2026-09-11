@@ -51,6 +51,8 @@ Large panels require `n(n-1)/2` heterodimer comparisons, in addition to per-olig
 
 The desktop interface opens in English by default and can be switched to Russian from the language selector. The command-line interface keeps English as its default. Exported CSV and TSV field names remain in English for stable downstream processing.
 
+The original two-column workspace is retained: input, parsed preview, conditions and Run are on the left; language, summaries, result tabs and selected-structure details are on the right. On smaller screens, each column scrolls independently. Use its outer vertical scrollbar to reach lower sections and its horizontal scrollbar to reveal controls beyond the column width. Drag the divider to adjust the column widths. Keyboard traversal brings the focused control into view. The editor, result tables and matrix keep their own scrolling; the mouse wheel over labels or buttons scrolls the surrounding column. Starting analysis reveals the Run controls so Cancel is accessible.
+
 ### Saved conditions and analyzed runs
 
 Use **Save preset** beside the reaction-condition preset selector to keep a named custom set of every reaction and structure-filter condition. Saved custom presets are available after the application restarts and can be deleted from the same controls. The built-in `qPCR / TaqMan` preset and the `Custom` editing state cannot be overwritten. Presets are local per-user files: `%LOCALAPPDATA%\MBUprime StructLab\condition-presets.json` on Windows, `$XDG_CONFIG_HOME/mbuprime-structlab/condition-presets.json` (or `~/.config/...`) on Linux, and `~/Library/Application Support/MBUprime StructLab/condition-presets.json` on macOS.
