@@ -51,6 +51,9 @@ def test_original_panes_scroll_without_collapsing_content(
     root.attributes('-disabled', True)
     root.attributes('-alpha', 0.0)
     root.tk.call('tk', 'scaling', scaling)
+    # Tk otherwise caps geometry at the physical desktop size on hosted runners.
+    # These non-activating test windows must exercise the requested client size.
+    root.maxsize(1920, 1080)
     root.geometry(size)
     try:
         with patch.object(gui.gui_exports, 'load_condition_presets', return_value={}):
@@ -60,11 +63,7 @@ def test_original_panes_scroll_without_collapsing_content(
         assert not callback_errors, callback_errors
         expected = tuple(map(int, size.split('x')))
         actual = (root.winfo_width(), root.winfo_height())
-        if size == '1920x1080':
-            # Windows may cap decorated windows at the desktop work area.
-            assert actual[0] == 1920 and 900 <= actual[1] <= 1080
-        else:
-            assert actual == expected
+        assert actual == expected
         assert app._language_code == 'en'
         assert isinstance(app._workbench, gui.ttk.PanedWindow)
         assert not hasattr(app, 'workbench_nb')

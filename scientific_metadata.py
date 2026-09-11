@@ -24,7 +24,7 @@ from pathlib import Path
 from typing import Iterable, Mapping, Sequence
 
 
-APPLICATION_VERSION = "2.4.4"
+APPLICATION_VERSION = "2.4.5"
 APP_VERSION = APPLICATION_VERSION
 SCIENTIFIC_POLICY_VERSION = "2026-09-08-context-retention-and-duplex-offsets-1"
 MANIFEST_SCHEMA_VERSION = "7"
