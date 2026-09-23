@@ -58,7 +58,9 @@ signing, artifact layout and verification use the [release contract](../packagin
 For a source distribution, use `python setup.py sdist` with the pinned setuptools
 on CPython 3.12. The maintained gate builds a clean sdist, checks its required inputs,
 builds a native wheel from the extracted archive, installs it into an isolated target
-directory, and runs a live native probe:
+directory, and probes native loading, a live four-engine CLI analysis and GUI asset
+resolution from outside the checkout. Module origins must resolve inside the installed
+target, so a successful checkout import cannot hide missing wheel files:
 
 ```powershell
 python packaging/verify_source_distribution.py --workdir C:\mbu-sdist-check-01
@@ -82,3 +84,18 @@ are in [platforms](platforms.md).
 Do not manually edit generated tokens, icons, provenance or native identities.
 Preserve component licenses, corresponding-source inputs and prior release bytes.
 See [CONTRIBUTING.md](../CONTRIBUTING.md) for change and issue guidance.
+
+## Packaged synthetic GUI walkthrough
+
+After building, run the packaged executable from its extracted application folder
+in an interactive Windows desktop. This opt-in self-test performs the small-panel
+analysis in English and Russian, exports reports, and checks archive restoration:
+
+```powershell
+& '.\MBUprime StructLab.exe' --self-test --self-test-log C:\mbu-audit\small-panel.log --qualify-small-panel C:\mbu-audit\small-panel-01
+```
+
+Create the parent evidence directory first and choose a new, empty output directory.
+Keep the executable beside `_internal`. Retain the emitted logs and outputs outside
+the checkout; inspect the test result before claiming success. This is an automated
+application walkthrough, not a human usability study or clean-host qualification.

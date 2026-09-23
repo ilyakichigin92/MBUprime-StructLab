@@ -5,7 +5,11 @@ Analyze a single assay or a multiplex panel. Analysis runs locally; sequences an
 results are not uploaded to an external service.
 
 **[Download for Windows x64 — latest release](https://github.com/ilyakichigin92/MBUprime-StructLab/releases/latest)**
-· [v2.4.5 release notes and SHA-256 files](https://github.com/ilyakichigin92/MBUprime-StructLab/releases/tag/v2.4.5)
+Choose the asset named `MBUprime-StructLab-<version>-windows-x64-unsigned.zip`.
+**Source code (zip)** and **Source code (tar.gz)** are automatic source archives,
+not runnable applications. The release page also provides the ZIP SHA-256 sidecar.
+
+[English quick start](docs/quick-start.md) · [Быстрый старт на русском](docs/quick-start-ru.md)
 · [User guide](docs/user-guide.md) · [Report an issue](https://github.com/ilyakichigin92/MBUprime-StructLab/issues)
 
 The Windows ZIP includes Python and all four scientific engines. It is **unsigned**:
@@ -13,11 +17,11 @@ Windows security controls may ask for confirmation or block it under local polic
 Download from this repository and compare the ZIP with its published SHA-256 sidecar.
 Hashes identify file contents; they do not authenticate a publisher.
 
-![English MBUprime StructLab interface analyzing two synthetic oligonucleotides, with result tables and structure detail](docs/images/analysis-example.png)
+![English MBUprime StructLab interface analyzing two synthetic oligonucleotides, with flagged structures and a selected hairpin detail](docs/images/analysis-example-v2.4.6-source.png)
 
-The actual English v2.4.3 source GUI shows the [small synthetic example](examples/small-panel/README.md),
+The actual English v2.4.6 source GUI shows the [small synthetic example](examples/small-panel/README.md),
 with flagged structures and a hairpin detail. This is not a frozen-executable
-screenshot or a validated PCR assay.
+screenshot or a validated PCR assay. [Screenshot origins](docs/images/README.md).
 
 ## Try a small panel
 
@@ -62,7 +66,8 @@ of assay performance. Windows requires an ASCII-only resolved application path.
 
 ## Documentation and support
 
-[User guide](docs/user-guide.md) · [Scientific methods](docs/methods.md) ·
+[All documentation by task](docs/README.md) · [User guide](docs/user-guide.md) ·
+[Scientific methods](docs/methods.md) ·
 [CLI reference](docs/cli.md) · [Development and tests](docs/development.md) ·
 [Architecture](docs/architecture.md) · [Release builds](packaging/RELEASE.md)
 

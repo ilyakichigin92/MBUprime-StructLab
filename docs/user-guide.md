@@ -1,12 +1,12 @@
 # User guide
 
-[Download and quick start](../README.md) · [Methods](methods.md) · [CLI](cli.md)
+[English quick start](quick-start.md) · [Быстрый старт на русском](quick-start-ru.md) · [Methods](methods.md) · [CLI](cli.md)
 
 ## Start the desktop application
 
 On Windows:
 
-1. Download the Windows x64 ZIP from [Releases](https://github.com/ilyakichigin92/MBUprime-StructLab/releases/latest), verify the adjacent SHA-256 sidecar, and extract the complete ZIP into an application folder.
+1. Download the `MBUprime-StructLab-<version>-windows-x64-unsigned.zip` application asset (not **Source code (zip)** or **Source code (tar.gz)**) from [Releases](https://github.com/ilyakichigin92/MBUprime-StructLab/releases/latest), verify the adjacent SHA-256 sidecar, and extract the complete ZIP into an application folder.
 2. Keep `MBUprime StructLab.exe` and the adjacent `_internal` folder together.
 3. Double-click `MBUprime StructLab.exe`.
 

@@ -1,6 +1,6 @@
 # Architecture and repository map
 
-[Development](development.md) · [Scientific methods](methods.md) · [Release contract](../packaging/RELEASE.md)
+[Repository layout and complete inventory](repository-layout.md) · [Development](development.md) · [Scientific methods](methods.md) · [Release contract](../packaging/RELEASE.md)
 
 The GUI and CLI share the scientific orchestration layer. Input validation builds
 oligonucleotides and reaction conditions; analysis discovers candidate geometries,

@@ -1,7 +1,9 @@
 # Contributing
 
 Start with [development setup and tests](docs/development.md) and the
-[architecture map](docs/architecture.md). Use Windows x64 with the pinned release
+[architecture map](docs/architecture.md). The [file inventory](docs/repository-layout.md)
+records retained modules and distinct build inputs; update it when adding or moving
+a tracked path. Use Windows x64 with the pinned release
 environment for Windows build verification; Ubuntu/macOS qualification is pending.
 
 Keep changes focused and explain their effect on engine measurements, exact
