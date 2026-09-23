@@ -18,6 +18,7 @@ import struct
 import subprocess
 import sys
 import tempfile
+import time
 from types import CodeType
 from typing import Iterator
 import zipfile
@@ -873,14 +874,30 @@ def _verify_cyrillic_path_probe(
     return completed.returncode
 
 
+@contextmanager
+def _self_test_directory(parent: Path) -> Iterator[Path]:
+    temporary = tempfile.TemporaryDirectory(prefix="release-verifier-", dir=parent)
+    try:
+        yield Path(temporary.name)
+    finally:
+        # Windows may briefly retain the copied executable after its process exits.
+        for attempt in range(10):
+            try:
+                temporary.cleanup()
+                break
+            except PermissionError:
+                if attempt == 9:
+                    raise
+                time.sleep(0.5)
+
+
 def _verify_self_test_identity(
     executable: Path,
     application_dir: Path,
     provenance: dict[str, object],
     executable_hash: str,
 ) -> dict[str, object]:
-    with tempfile.TemporaryDirectory(prefix="release-verifier-", dir=application_dir.parent) as raw:
-        verifier_root = Path(raw)
+    with _self_test_directory(application_dir.parent) as verifier_root:
         identities = [
             _run_self_test(executable, verifier_root, "temp-unset", None),
             _run_self_test(

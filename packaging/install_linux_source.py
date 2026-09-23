@@ -325,7 +325,7 @@ def _launcher(version: str, *, gui: bool) -> str:
     command = (
         f'export MBUPRIME_ASSET_ROOT="$root/assets"\n'
         f'exec "$root/venv/bin/python" "$root/packaging/linux_gui_bootstrap.py" "$@"'
-        if gui else 'exec "$root/venv/bin/python" -m mbuprime_structlab "$@"'
+        if gui else 'exec "$root/venv/bin/python" -P -m mbuprime_structlab "$@"'
     )
     return f"""#!/bin/sh
 {MANAGED_LINE}

@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tarfile
+import tempfile
 import tomllib
 
 import pytest
@@ -39,6 +40,49 @@ def test_cli_version_matches_distribution_metadata():
 
     metadata = tomllib.loads((SCRIPT.parents[1] / "pyproject.toml").read_text("utf-8"))
     assert __version__ == metadata["project"]["version"] == APPLICATION_VERSION
+
+
+@pytest.mark.parametrize("failures,error", [
+    (2, PermissionError), (10, PermissionError), (1, OSError),
+])
+def test_release_verifier_cleanup_retries_only_transient_permission_errors(
+        monkeypatch, tmp_path, failures, error):
+    spec = importlib.util.spec_from_file_location(
+        "release_cleanup_gate", SCRIPT.with_name("verify_release_identity.py"))
+    verifier = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(verifier)
+    temporary = tempfile.TemporaryDirectory(dir=tmp_path)
+    root = Path(temporary.name)
+    (root / "disposable.exe").write_bytes(b"synthetic executable")
+    cleanup = temporary.cleanup
+    attempts = []
+    sleeps = []
+
+    def locked_cleanup():
+        attempts.append(1)
+        if len(attempts) <= failures:
+            raise error("synthetic cleanup failure")
+        cleanup()
+
+    monkeypatch.setattr(temporary, "cleanup", locked_cleanup)
+    monkeypatch.setattr(verifier.tempfile, "TemporaryDirectory", lambda **kwargs: temporary)
+    monkeypatch.setattr(verifier.time, "sleep", sleeps.append)
+    try:
+        if failures == 2:
+            with verifier._self_test_directory(tmp_path) as directory:
+                assert directory == root
+            assert not root.exists()
+            assert len(attempts) == 3
+            assert sleeps == [0.5, 0.5]
+        else:
+            with pytest.raises(error, match="synthetic cleanup failure"):
+                with verifier._self_test_directory(tmp_path):
+                    pass
+            assert root.exists()
+            assert len(attempts) == failures
+            assert sleeps == ([0.5] * 9 if error is PermissionError else [])
+    finally:
+        cleanup()
 
 
 @pytest.fixture
