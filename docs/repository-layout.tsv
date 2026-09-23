@@ -1,4 +1,5 @@
 current_path	target_path	responsibility	role	decision	rationale
+(new)	tests/test_gui_qualification_cleanup_contract.py	tests	Qualification failure cleanup regression tests	add	Ensures worker cancellation, widget destruction and dialog restoration after errors
 .gitattributes	.gitattributes	repository metadata	Repository text/binary handling	retain	Distinct maintained contract; no relocation benefit
 .github/ISSUE_TEMPLATE/bug_report.md	.github/ISSUE_TEMPLATE/bug_report.md	repository metadata	Public issue intake template: bug_report	retain	Keeps reproducible bug reports and feature requests discoverable
 .github/ISSUE_TEMPLATE/feature_request.md	.github/ISSUE_TEMPLATE/feature_request.md	repository metadata	Public issue intake template: feature_request	retain	Keeps reproducible bug reports and feature requests discoverable
