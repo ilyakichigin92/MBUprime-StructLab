@@ -63,6 +63,15 @@ class BuildPyWithScientificProvenance(build_py):
 
     def run(self) -> None:
         super().run()
+        # Keep assets/ as the sole maintained tree; wheels own their resource copy.
+        for source_asset in sorted((ROOT / "assets").rglob("*")):
+            if (not source_asset.is_file() or
+                    source_asset.suffix not in {".ico", ".svg", ".ttf", ".txt", ".conf"}):
+                continue
+            destination = (Path(self.build_lib) / "mbuprime_structlab" / "assets"
+                           / source_asset.relative_to(ROOT / "assets"))
+            self.mkpath(str(destination.parent))
+            self.copy_file(str(source_asset), str(destination))
         target = Path(self.build_lib) / "scientific_metadata.py"
         source = target.read_text(encoding="utf-8")
         if source.count(PROVENANCE_SENTINEL) != 1:

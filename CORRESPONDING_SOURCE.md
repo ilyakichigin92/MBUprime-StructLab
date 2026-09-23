@@ -2,9 +2,9 @@
 
 ## Current status
 
-The current source target is app 2.4.5, manifest schema 7, policy
+The current source target is app 2.4.6, manifest schema 7, policy
 `2026-09-08-context-retention-and-duplex-offsets-1`.
-The locally built distribution targets app 2.4.5, manifest schema 7, and this policy.
+The locally built distribution targets app 2.4.6, manifest schema 7, and this policy.
 Each binary carries its own
 path-preserving corresponding-source tree and `source-manifest.json` under
 `_internal/rnastructure-corresponding-source/`. The token/icon generators, assets,

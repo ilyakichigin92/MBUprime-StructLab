@@ -80,9 +80,13 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     parser.add_argument("--self-test-log")
     parser.add_argument("--qualify-archive", type=Path,
                         help="Exercise packaged GUI import/export using an analyzed-run archive")
+    parser.add_argument("--qualify-small-panel", type=Path,
+                        help="Run the synthetic bilingual GUI walkthrough into a new output directory")
     args = parser.parse_args(argv)
     if args.qualify_archive is not None and not (args.self_test and args.self_test_log):
         parser.error("--qualify-archive requires --self-test and --self-test-log")
+    if args.qualify_small_panel is not None and not (args.self_test and args.self_test_log):
+        parser.error("--qualify-small-panel requires --self-test and --self-test-log")
     return args
 
 
@@ -195,6 +199,9 @@ def _run_application(root: tk.Tk, args: argparse.Namespace,
             if getattr(args, "qualify_archive", None) is not None:
                 qualification = importlib.import_module("frozen_gui_qualification")
                 qualification.run(root, gui, args.qualify_archive, log)
+            if getattr(args, "qualify_small_panel", None) is not None:
+                qualification = importlib.import_module("frozen_gui_qualification")
+                qualification.run_small_panel(root, gui, args.qualify_small_panel, log)
         else:
             _run_normal_startup(gui, root)
         exit_code = 0

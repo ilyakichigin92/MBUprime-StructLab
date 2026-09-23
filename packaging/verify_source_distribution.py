@@ -8,6 +8,7 @@ the work directory on failure for inspection and choose a new one for a rerun.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path, PurePosixPath
@@ -27,7 +28,7 @@ GENERATED = shutil.ignore_patterns(
 
 def run(command: list[str], cwd: Path, work: Path, name: str) -> None:
     environment = os.environ.copy()
-    for key in ("PYTHONHOME", "PYTHONPATH"):
+    for key in ("PYTHONHOME", "PYTHONPATH", "MBUPRIME_ASSET_ROOT"):
         environment.pop(key, None)
     environment["PYTHONNOUSERSITE"] = "1"
     environment["PYTHONDONTWRITEBYTECODE"] = "1"
@@ -154,7 +155,61 @@ def main() -> None:
     )
     run([sys.executable, "-I", "-c", probe, str(installed)],
         work, work, "installed-native-probe")
-    print("Source distribution, extracted wheel build, and installed native probe passed")
+    # Compare every shipped resource, including font licensing, with canonical input.
+    assets = {
+        path.relative_to(source / "assets").as_posix():
+        hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in (source / "assets").rglob("*")
+        if path.suffix in {".ico", ".svg", ".ttf", ".txt", ".conf"}
+    }
+    resource_probe = """
+import hashlib, json, sys
+from pathlib import Path
+installed = Path(sys.argv[1]).resolve()
+sys.path.insert(0, str(installed))
+import app_assets
+assert Path(app_assets.__file__).resolve().is_relative_to(installed)
+for name, expected in json.loads(sys.argv[2]).items():
+    path = app_assets.asset_path(name).resolve()
+    assert path.is_relative_to(installed), path
+    assert hashlib.sha256(path.read_bytes()).hexdigest() == expected, path
+    print(path)
+"""
+    run([sys.executable, "-I", "-c", resource_probe, str(installed),
+         json.dumps(assets)], work, work, "installed-resource-probe")
+    # Run the actual public module entry point and reject checkout-resolved modules.
+    cli_probe = """
+import importlib.metadata, runpy, sys, tomllib
+from pathlib import Path
+installed = Path(sys.argv[1]).resolve()
+sys.path.insert(0, str(installed))
+metadata = tomllib.loads(Path(sys.argv[2]).read_text(encoding='utf-8'))
+modules = metadata['tool']['setuptools']['py-modules']
+sys.argv = ['mbuprime-structlab', *sys.argv[4:]]
+try:
+    if sys.argv[1] == '--version':
+        entry, = importlib.metadata.distribution('mbuprime-structlab').entry_points
+        result = entry.load()()
+        assert result in (None, 0), result
+    else:
+        runpy.run_module('mbuprime_structlab', run_name='__main__')
+except SystemExit as exc:
+    assert exc.code in (None, 0), exc.code
+for name, module in tuple(sys.modules.items()):
+    root = name.split('.')[0]
+    if root in modules or root in {'mbuprime_structlab', 'rnastructure_native'}:
+        assert Path(module.__file__).resolve().is_relative_to(installed), name
+assert 'tkinter' not in sys.modules, 'CLI imported Tk'
+"""
+    panel = work / "synthetic-panel.tsv"
+    shutil.copyfile(source / "examples/small-panel/panel.tsv", panel)
+    cli = [sys.executable, "-I", "-c", cli_probe, str(installed),
+           str(source / "pyproject.toml"), "--"]
+    run([*cli, "--version"], work, work, "installed-console-entry-probe")
+    run([*cli, "analyze", str(panel), "--format", "tsv", "--progress", "none",
+         "--output", str(work / "installed-analysis.tsv")],
+        work, work, "installed-cli-analysis")
+    print("Source distribution, wheel, installed native/resources and CLI gates passed")
 
 
 if __name__ == "__main__":

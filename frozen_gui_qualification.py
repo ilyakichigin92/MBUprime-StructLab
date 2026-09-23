@@ -9,6 +9,106 @@ from pathlib import Path
 import time
 
 
+def run_small_panel(root, gui, output_dir, log):
+    """Analyze the public synthetic example in both locales and export/reopen it.
+
+    Only file/confirmation dialogs are automated. Engines, analysis workers,
+    rendering, export writers and archive readers follow the normal GUI paths.
+    The explicitly selected output directory must be empty to preserve user data.
+    """
+    output = Path(output_dir).resolve()
+    output.mkdir(parents=True, exist_ok=True)
+    if any(output.iterdir()):
+        raise ValueError("Small-panel qualification requires an empty output directory")
+    saved = []
+    errors = []
+    app = None
+
+    def replace(owner, name, value):
+        saved.append((owner, name, getattr(owner, name)))
+        setattr(owner, name, value)
+
+    def require(condition, message):
+        if not condition:
+            raise RuntimeError(f"Small-panel GUI qualification: {message}")
+
+    def pump(done, stage, timeout=120, check_errors=True):
+        deadline = time.monotonic() + timeout
+        while True:
+            require(time.monotonic() < deadline, f"{stage} timed out")
+            root.update()
+            if check_errors:
+                require(not errors, f"{stage} callback/dialog error: {errors[:1]}")
+            if done():
+                log(f"stage=small-panel-{stage} status=ok")
+                return
+            time.sleep(0.002)
+
+    try:
+        replace(gui.gui_exports, "load_condition_presets", lambda *args, **kwargs: {})
+        replace(gui.messagebox, "showinfo", lambda *args, **kwargs: None)
+        replace(gui.messagebox, "showerror", lambda *args, **kwargs: errors.append(str(args)))
+        replace(root, "report_callback_exception", lambda *args: errors.append(str(args)))
+        app = gui.MBUprimeStructLabApp(root)
+        require(app._language_code == "en", "public startup language is not English")
+        app._confirm_analyzed_run_import = lambda loaded: True
+        app.input_nb.select(1)
+        app.bulk_text.delete("1.0", "end")
+        app.bulk_text.insert("1.0", "F_demo = GCGCAAAAGCGC\nR_demo = GCGCTTTTGCGC")
+        for language in ("en", "ru"):
+            app._set_language(language)
+            app.analyze()
+            pump(lambda: not app._analysis_running() and not app._analysis_pending
+                 and not app._render_jobs, f"{language}-analysis")
+            report = app._last_report
+            require(report is not None and report.complete, "analysis did not complete")
+            groups = (report.hairpins, report.self_dimers, report.hetero_dimers)
+            counts = [sum(len(item.structures) for item in group) for group in groups]
+            require(counts == [5, 7, 4], f"unexpected synthetic structure counts: {counts}")
+            app._show_structure_detail(report.hairpins[0].structures[0])
+            require(bool(app._detail_text.get("1.0", "end-1c").strip()), "empty result detail")
+            log(f"stage=small-panel-{language}-inspection status=ok oligos=2 "
+                f"hairpins={counts[0]} self_dimers={counts[1]} heterodimers={counts[2]}")
+            for kind, suffix in (("tsv", ".tsv"), ("run_archive", ".mbusl-run")):
+                destination = output / (language + suffix)
+                replace(gui.gui_exports.filedialog, "asksaveasfilename",
+                        lambda _path=destination, **kwargs: str(_path))
+                app._export(kind)
+                require(not errors, f"{language} {kind} export failed: {errors[:1]}")
+                require(destination.is_file() and destination.stat().st_size > 0,
+                        f"{language} {kind} export missing")
+            original_export = gui.gui_exports.format_export(
+                "tsv", app._last_oligos, report, app._last_cond)
+            archive = output / (language + ".mbusl-run")
+            replace(gui.gui_exports, "choose_analyzed_run_path", lambda *args, **kwargs: str(archive))
+            app._import_analyzed_run()
+            pump(lambda: app._import_thread is None and not app._render_jobs,
+                 f"{language}-archive-reopen")
+            restored_export = gui.gui_exports.format_export(
+                "tsv", app._last_oligos, app._last_report, app._last_cond)
+            require(restored_export == original_export, "archive changed exported scientific results")
+            log(f"stage=small-panel-{language}-export-roundtrip status=ok")
+        log("stage=small-panel-qualification status=ok "
+            "example=examples/small-panel/bulk.txt conditions=default-qPCR-TaqMan "
+            "automation=programmatic-not-human-walkthrough")
+    finally:
+        try:
+            if app is not None:
+                try:
+                    if app._analysis_running():
+                        app.cancel_analysis()
+                        pump(lambda: not app._analysis_running(), "cleanup", timeout=15,
+                             check_errors=False)
+                finally:
+                    try:
+                        app._cancel_render_jobs()
+                    finally:
+                        app.destroy()
+        finally:
+            for owner, name, value in reversed(saved):
+                setattr(owner, name, value)
+
+
 def run(root, gui, archive_path, log):
     """Import, cancel, redraw and reject stale imports using a supplied archive."""
     path = Path(archive_path).resolve(strict=True)

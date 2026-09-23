@@ -2,15 +2,15 @@
 
 ## Current release status
 
-The Windows app 2.4.5 deliverable is an **unsigned development** release. It is
+The Windows app 2.4.6 deliverable is an **unsigned development** release. It is
 never classified as trusted. Windows 10 22H2 and Windows 11 x64 are the
 support targets; runtime verification evidence applies to its recorded host; a 32-bit Windows loader may reject the AMD64 executable before
 Tk can display an error.
 
 Executed host evidence is Windows 10 22H2 build 19045. Windows 11 is an intended
 support target with clean-host qualification pending, not a verified platform.
-The published version is [v2.4.5](https://github.com/ilyakichigin92/MBUprime-StructLab/releases/tag/v2.4.5).
-The current source targets app 2.4.5, manifest schema 7, and scientific policy
+The published version is [v2.4.6](https://github.com/ilyakichigin92/MBUprime-StructLab/releases/tag/v2.4.6).
+The current source targets app 2.4.6, manifest schema 7, and scientific policy
 `2026-09-08-context-retention-and-duplex-offsets-1`. New builds use `dist/` in the
 selected checkout. Preserve existing release assets and their bundled source
 identities; source-only changes do not retroactively certify them.
@@ -137,9 +137,9 @@ release probes from hanging.
 
 The unsigned output names are:
 
-- `dist\MBUprime-StructLab-2.4.5-windows-x64-unsigned.zip`
-- `dist\MBUprime-StructLab-2.4.5-windows-x64-unsigned.zip.sha256`
-- `dist\MBUprime-StructLab-2.4.5-windows-x64-unsigned.release-manifest.json`
+- `dist\MBUprime-StructLab-2.4.6-windows-x64-unsigned.zip`
+- `dist\MBUprime-StructLab-2.4.6-windows-x64-unsigned.zip.sha256`
+- `dist\MBUprime-StructLab-2.4.6-windows-x64-unsigned.release-manifest.json`
 - `dist\MBUprime StructLab.exe.sha256`
 - `dist\MBUprime StructLab.signing-attestation.json`
 
@@ -155,7 +155,7 @@ sidecar and signing attestation also remain external `dist` release assets. The
 release manifest records recursive post-sign file identities. Its ZIP self-hash
 remains external because an archive cannot contain a stable hash of itself.
 
-Analyzed runs are a separate user-data format. App 2.4.5 writes deterministic
+Analyzed runs are a separate user-data format. App 2.4.6 writes deterministic
 ZIP64/DEFLATE schema-2 `.mbusl-run` archives with ten fixed members and
 line-streamed JSONL result records. Legacy schema-1 JSON is import-only. The
 reader accepts at most 5,000,000 aggregate JSONL records, 256 MiB compressed,
@@ -189,6 +189,17 @@ sorting and stale-input rejection inside the same executable:
 ```powershell
 & '.\MBUprime StructLab.exe' --self-test --self-test-log C:\mbu-audit\large-gui.log --qualify-archive C:\mbu-data\large-run.json
 ```
+
+For the small synthetic example, a separate opt-in walkthrough runs real analysis
+in English and Russian, inspects structures, exports TSV and analyzed-run files,
+and reopens each archive to compare its exported results:
+
+```powershell
+& '.\MBUprime StructLab.exe' --self-test --self-test-log C:\mbu-audit\small-panel.log --qualify-small-panel C:\mbu-audit\small-panel-01
+```
+
+Choose a new or empty output directory. This is programmatic GUI evidence on the
+recorded host, not a human usability study or clean-host qualification.
 
 Both self-test flags are required. The scenario chooses only the supplied data
 file and automatically accepts its import confirmation, then restores its local

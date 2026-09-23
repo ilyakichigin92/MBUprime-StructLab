@@ -4,8 +4,8 @@ type: software
 title: "MBUprime StructLab"
 authors:
   - name: "MBUprime StructLab contributors"
-version: "2.4.5"
+version: "2.4.6"
 repository-code: "https://github.com/ilyakichigin92/MBUprime-StructLab"
-url: "https://github.com/ilyakichigin92/MBUprime-StructLab/releases/tag/v2.4.5"
+url: "https://github.com/ilyakichigin92/MBUprime-StructLab/releases/tag/v2.4.6"
 license: GPL-2.0-only
 abstract: "Local PCR and qPCR oligonucleotide screening for hairpins, self-dimers and heterodimers with desktop and command-line interfaces."

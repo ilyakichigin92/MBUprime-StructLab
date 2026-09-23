@@ -4,7 +4,7 @@ include native_target.py frozen_gui_qualification.py requirements-test.txt pytes
 include packaging/cpython_windows_runtime.json
 recursive-include tests *.py
 include CONTRIBUTING.md CITATION.cff
-recursive-include docs *.md *.txt *.png *.svg *.jpg
+recursive-include docs *.md *.txt *.tsv *.png *.svg *.jpg
 recursive-include examples *.md *.txt *.tsv *.json
 recursive-include packaging *.py *.ps1 *.sh *.spec *.md *.txt
 include packaging/generate_provenance.py packaging/release_inventory.json packaging/release_components.json

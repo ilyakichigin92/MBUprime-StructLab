@@ -1,4 +1,4 @@
-"""Source and PyInstaller-safe access to shared application assets."""
+"""Source, installed-wheel and PyInstaller access to shared application assets."""
 
 from __future__ import annotations
 
@@ -46,14 +46,18 @@ class PrivateFontRegistration:
 
 
 def asset_path(name: str) -> Path:
-    """Resolve an asset from source or PyInstaller's extraction directory."""
+    """Resolve an asset from the active source, wheel or frozen layout."""
 
     if hasattr(sys, "_MEIPASS"):
         return Path(sys._MEIPASS) / "assets" / name
     installed_root = os.environ.get("MBUPRIME_ASSET_ROOT")
     if installed_root:
         return Path(installed_root) / name
-    return Path(__file__).resolve().parent / "assets" / name
+    module_root = Path(__file__).resolve().parent
+    package_assets = module_root / "mbuprime_structlab" / "assets"
+    if package_assets.is_dir():
+        return package_assets / name
+    return module_root / "assets" / name
 
 
 def apply_window_icon(window: tk.Misc) -> bool:
