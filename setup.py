@@ -5,16 +5,20 @@ from __future__ import annotations
 import importlib.util
 import json
 from pathlib import Path
+import sys
 
 from setuptools import setup
 from setuptools.command.build import build
 from setuptools.command.build_py import build_py
 
+ROOT = Path(__file__).resolve().parent
+# PEP 517 hook runners need not put the project directory on the import path.
+sys.path.insert(0, str(ROOT))
+
 from native.setup_native import ManifestBuildExt, native_extension
 from native_target import current_target
 
 
-ROOT = Path(__file__).resolve().parent
 PROVENANCE_SENTINEL = '_BUNDLED_SOURCE_PROVENANCE_JSON = "{}"'
 
 

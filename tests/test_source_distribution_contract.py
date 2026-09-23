@@ -4,7 +4,10 @@ import importlib.util
 import io
 import json
 from pathlib import Path
+import subprocess
+import sys
 import tarfile
+import tomllib
 
 import pytest
 
@@ -13,6 +16,29 @@ SCRIPT = Path(__file__).resolve().parents[1] / "packaging/verify_source_distribu
 SPEC = importlib.util.spec_from_file_location("source_distribution_gate", SCRIPT)
 gate = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(gate)
+
+
+def test_pep517_metadata_without_checkout_on_import_path(tmp_path):
+    """Pip invokes hooks with the backend runner, not the checkout, on sys.path."""
+    probe = (
+        "from setuptools.build_meta import prepare_metadata_for_build_wheel; "
+        "import sys; prepare_metadata_for_build_wheel(sys.argv[1])")
+    result = subprocess.run(
+        [sys.executable, "-I", "-c", probe, str(tmp_path)],
+        cwd=SCRIPT.parents[1], capture_output=True, text=True, timeout=120)
+    assert result.returncode == 0, result.stdout + result.stderr
+    metadata, = tmp_path.glob("*.dist-info/METADATA")
+    version = tomllib.loads((SCRIPT.parents[1] / "pyproject.toml").read_text("utf-8"))[
+        "project"]["version"]
+    assert f"Version: {version}\n" in metadata.read_text("utf-8")
+
+
+def test_cli_version_matches_distribution_metadata():
+    from mbuprime_structlab import __version__
+    from scientific_metadata import APPLICATION_VERSION
+
+    metadata = tomllib.loads((SCRIPT.parents[1] / "pyproject.toml").read_text("utf-8"))
+    assert __version__ == metadata["project"]["version"] == APPLICATION_VERSION
 
 
 @pytest.fixture

@@ -132,9 +132,9 @@ def main() -> None:
         return
     wheels = work / "wheel"
     wheels.mkdir()
-    run([sys.executable, "-c",
-         "from setuptools.build_meta import build_wheel; import sys; build_wheel(sys.argv[1])",
-         str(wheels)], extracted, work, "extracted-wheel-build")
+    run([sys.executable, "-m", "pip", "wheel", "--no-deps",
+         "--no-build-isolation", "--no-index", "--wheel-dir", str(wheels),
+         str(extracted)], work, work, "extracted-wheel-build")
     artifacts = list(wheels.glob("*.whl"))
     if len(artifacts) != 1:
         raise RuntimeError("Expected exactly one freshly built wheel")
@@ -179,22 +179,32 @@ for name, expected in json.loads(sys.argv[2]).items():
          json.dumps(assets)], work, work, "installed-resource-probe")
     # Run the actual public module entry point and reject checkout-resolved modules.
     cli_probe = """
-import importlib.metadata, runpy, sys, tomllib
+import contextlib, importlib.metadata, io, runpy, sys, tomllib
 from pathlib import Path
 installed = Path(sys.argv[1]).resolve()
 sys.path.insert(0, str(installed))
 metadata = tomllib.loads(Path(sys.argv[2]).read_text(encoding='utf-8'))
+import mbuprime_structlab, scientific_metadata
+assert (mbuprime_structlab.__version__
+        == importlib.metadata.version('mbuprime-structlab')
+        == scientific_metadata.APPLICATION_VERSION
+        == metadata['project']['version']), 'installed application versions disagree'
 modules = metadata['tool']['setuptools']['py-modules']
 sys.argv = ['mbuprime-structlab', *sys.argv[4:]]
+version_output = io.StringIO()
 try:
     if sys.argv[1] == '--version':
         entry, = importlib.metadata.distribution('mbuprime-structlab').entry_points
-        result = entry.load()()
+        with contextlib.redirect_stdout(version_output):
+            result = entry.load()()
         assert result in (None, 0), result
     else:
         runpy.run_module('mbuprime_structlab', run_name='__main__')
 except SystemExit as exc:
     assert exc.code in (None, 0), exc.code
+if sys.argv[1] == '--version':
+    assert version_output.getvalue().strip() == mbuprime_structlab.__version__
+    print(version_output.getvalue(), end='')
 for name, module in tuple(sys.modules.items()):
     root = name.split('.')[0]
     if root in modules or root in {'mbuprime_structlab', 'rnastructure_native'}:
